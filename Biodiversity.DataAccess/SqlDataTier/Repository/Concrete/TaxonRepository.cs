@@ -16,6 +16,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         {
             _context = context;
         }
+
         public IEnumerable<Taxon> GetAll(Expression<Func<Taxon, bool>> predicate = null)
         {
             return _context.Taxons.Where(predicate);
@@ -45,8 +46,10 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         {
             entity.TaxonId =
                 _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.TaxonSequence;").FirstOrDefault();
+            entity.CreatedDate = DateTime.Now;
+            entity.CreatedBy = "Admin";
             _context.Taxons.Add(entity);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         //public void Update(Taxon entity)
@@ -60,6 +63,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         {
             var entityId = entity.TaxonId;
             entity.ModifiedDate = DateTime.Now;
+            entity.ModifiedBy = "Admin";
             _context.Taxons.AddOrUpdate(entity);
             SaveChanges();
         }

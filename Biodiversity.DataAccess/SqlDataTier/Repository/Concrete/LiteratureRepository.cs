@@ -17,6 +17,11 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             _context = context;
         }
 
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
         public IEnumerable<Literature> GetAll(Expression<Func<Literature, bool>> predicate = null)
         {
             return _context.Literatures.Where(predicate);
@@ -41,20 +46,16 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         {
             entity.LiteratureId =
                 _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.LiteratureSequence;").FirstOrDefault();
+            entity.CreatedDate = DateTime.Now;
+            entity.ModifiedDate = null;
             _context.Literatures.Add(entity);
-            _context.SaveChanges();
+            SaveChanges();
         }
-
-        //public void Update(Literature entity)
-        //{
-        //    _context.Literatures.Attach(entity);
-        //    ((IObjectContextAdapter)_context).ObjectContext.ObjectStateManager.ChangeObjectState(entity,
-        //        EntityState.Modified);
-        //}
 
         public void Update(Literature entity)
         {
-            var entityId = entity.LiteratureId;
+            entity.ModifiedDate = DateTime.Now;
+            entity.ModifiedBy = "Admin";
             _context.Literatures.AddOrUpdate(entity);
             SaveChanges();
         }
@@ -67,11 +68,6 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         public long Count()
         {
             return _context.Literatures.Count();
-        }
-
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Biodiversity.Web.Models.Author
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
     }
+
     //public class Author
     //{
     //    public Author()

@@ -22,7 +22,9 @@ namespace Biodiversity.Web
             // container.LoadConfiguration();
 
             // TODO: Register your types here
-             container.RegisterType<IAuthorRepository, AuthorRepository>();
+            container.RegisterType<IAuthorRepository, AuthorRepository>();
+            container.RegisterType<ILiteratureRepository, LiteratureRepository>();
+            container.RegisterType<ITaxonRepository, TaxonRepository>();
         }
 
         #region Unity Container

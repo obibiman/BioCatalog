@@ -10,6 +10,7 @@ namespace Biodiversity.Domain
             LiteratureAuthors = new HashSet<LiteratureAuthor>();
             TaxonAuthors = new HashSet<TaxonAuthor>();
         }
+
         public int AuthorId { get; set; }
         public string Abbreviation { get; set; }
         public string LastName { get; set; }

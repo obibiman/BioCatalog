@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
+using Biodiversity.DataAccess.SqlDataTier.Entity;
 
-namespace Biodiversity.Domain
+namespace Biodiversity.Web.Models.Taxon
 {
-    public class Taxon
+    public class TaxonDeleteViewModel
     {
-        public Taxon()
+        public TaxonDeleteViewModel()
         {
             TaxonAuthors = new HashSet<TaxonAuthor>();
             TaxonLiteratures = new HashSet<TaxonLiterature>();
         }
-
         public int TaxonId { get; set; }
         public string TaxonName { get; set; }
         public string TaxonType { get; set; }

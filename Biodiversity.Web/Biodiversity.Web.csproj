@@ -204,6 +204,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Models\Literature\LiteratureCreateViewModel.cs" />
+    <Compile Include="Models\Literature\LiteratureDeleteViewModel.cs" />
+    <Compile Include="Models\Literature\LiteratureDetailViewModel.cs" />
+    <Compile Include="Models\Literature\LiteratureEditViewModel.cs" />
+    <Compile Include="Models\Literature\LiteratureListViewModel.cs" />
+    <Compile Include="Models\Taxon\TaxonCreateViewModel.cs" />
+    <Compile Include="Models\Taxon\TaxonDeleteViewModel.cs" />
+    <Compile Include="Models\Taxon\TaxonDetailViewModel.cs" />
+    <Compile Include="Models\Taxon\TaxonEditViewModel.cs" />
+    <Compile Include="Models\Taxon\TaxonListViewModel.cs" />
     <Compile Include="Services\AuthorService.cs" />
     <Compile Include="Controllers\AuthorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

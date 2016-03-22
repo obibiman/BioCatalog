@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Biodiversity.DataAccess.SqlDataTier.Entity;
 
-namespace Biodiversity.Domain
+namespace Biodiversity.Web.Models.Literature
 {
-    public class Literature
+    public class LiteratureCreateViewModel
     {
-        public Literature()
+        public LiteratureCreateViewModel()
         {
             LiteratureAuthors = new HashSet<LiteratureAuthor>();
             TaxonLiteratures = new HashSet<TaxonLiterature>();

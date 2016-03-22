@@ -1,49 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using Biodiversity.DataAccess.SqlDataTier;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Concrete;
-using PagedList;
+using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
+using Biodiversity.Web.Models.Taxon;
 
 namespace Biodiversity.Web.Controllers
 {
     public class TaxonsController : Controller
     {
         private readonly Biocontext _biocontext = new Biocontext();
+        private readonly ITaxonRepository _taxonRepository;
 
         public TaxonsController()
         {
-                
+            _taxonRepository = new TaxonRepository(_biocontext);
         }
-      
+
         public ActionResult Index(string searchString)
         {
-            var taxonRepository = new TaxonRepository(_biocontext);
-
             IEnumerable<Taxon> allTaxons;
-
+            List<TaxonListViewModel> taxonListViewModels;
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Taxon, TaxonListViewModel>());
+            var mapper = config.CreateMapper();
             if (!string.IsNullOrEmpty(searchString))
             {
-                allTaxons = taxonRepository.GetAll().AsEnumerable()
+                allTaxons = _taxonRepository.GetAll().AsEnumerable()
                     .Where(s => s.TaxonName.ToUpper()
                         .StartsWith(searchString.ToUpper()));
+                taxonListViewModels = mapper.Map<IEnumerable<Taxon>, List<TaxonListViewModel>>(allTaxons);
             }
             else
             {
-                allTaxons = taxonRepository.GetAll().AsEnumerable();
+                allTaxons = _taxonRepository.GetAll().AsEnumerable();
+                taxonListViewModels = mapper.Map<IEnumerable<Taxon>, List<TaxonListViewModel>>(allTaxons);
             }
-
-            return View(allTaxons.ToList());
+            return View(taxonListViewModels);
+            //return View(allTaxons.ToList());
         }
+
         // GET: Taxons/Details/5
         public ActionResult Details(int id)
         {
-            TaxonRepository taxonRepository = new TaxonRepository(_biocontext);
-            var taxon = taxonRepository.GetById(id);
+            var taxon = _taxonRepository.GetById(id);
             if (taxon == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -57,27 +61,25 @@ namespace Biodiversity.Web.Controllers
             return View();
         }
 
-        // POST: Taxons/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Taxon taxon)
         {
-            TaxonRepository taxonRepository = new TaxonRepository(_biocontext);
             if (ModelState.IsValid)
             {
-                taxonRepository.Add(taxon);
+                _taxonRepository.Add(taxon);
                 return RedirectToAction("Index");
             }
+            var errors = ModelState.Select(x => x.Value.Errors)
+                .Where(y => y.Count > 0)
+                .ToList();
             return View(taxon);
         }
 
         // GET: Taxons/Edit/5
         public ActionResult Edit(int id)
         {
-            TaxonRepository taxonRepository = new TaxonRepository(_biocontext);
-            var taxon = taxonRepository.GetById(id);
+            var taxon = _taxonRepository.GetById(id);
             if (taxon == null)
             {
                 return HttpNotFound();
@@ -89,26 +91,27 @@ namespace Biodiversity.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Taxon taxon)
         {
-            TaxonRepository taxonRepository = new TaxonRepository(_biocontext);
-            if (taxonRepository.GetById(id) == null)
+            if (_taxonRepository.GetById(id) == null)
             {
                 return HttpNotFound();
             }
-         
+
             if (ModelState.IsValid)
             {
                 taxon.ModifiedDate = DateTime.Now;
-                taxonRepository.Update(taxon);
+                _taxonRepository.Update(taxon);
                 return RedirectToAction("Index");
             }
+            var errors = ModelState.Select(x => x.Value.Errors)
+                .Where(y => y.Count > 0)
+                .ToList();
             return View(taxon);
         }
 
         // GET: Taxons/Delete/5
         public ActionResult Delete(int id)
         {
-            var taxonRepository = new TaxonRepository(_biocontext);
-            var taxon = taxonRepository.GetById(id);
+            var taxon = _taxonRepository.GetById(id);
             if (taxon == null)
             {
                 return HttpNotFound();
@@ -121,20 +124,9 @@ namespace Biodiversity.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var taxonRepository = new TaxonRepository(_biocontext);
-            var taxon = taxonRepository.GetById(id);
-            taxonRepository.Delete(taxon);
-            _biocontext.SaveChanges();
+            var taxon = _taxonRepository.GetById(id);
+            _taxonRepository.Delete(taxon);
             return RedirectToAction("Index");
         }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        _biocontext.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }

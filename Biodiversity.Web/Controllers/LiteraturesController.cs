@@ -1,30 +1,33 @@
-﻿using System.Data.Entity;
+﻿using System;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using Biodiversity.DataAccess.SqlDataTier;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
+using Biodiversity.DataAccess.SqlDataTier.Repository.Concrete;
+using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
 
 namespace Biodiversity.Web.Controllers
 {
     public class LiteraturesController : Controller
     {
-        private readonly Biocontext db = new Biocontext();
+        private readonly Biocontext _biocontext = new Biocontext();
+        private readonly ILiteratureRepository _literatureRepository;
+
+        public LiteraturesController()
+        {
+            _literatureRepository = new LiteratureRepository(_biocontext);
+        }
 
         // GET: Literatures
         public ActionResult Index()
         {
-            return View(db.Literatures.ToList());
+            return View(_literatureRepository.GetAll().ToList());
         }
 
         // GET: Literatures/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var literature = db.Literatures.Find(id);
+            var literature = _literatureRepository.GetById(id);
             if (literature == null)
             {
                 return HttpNotFound();
@@ -39,34 +42,28 @@ namespace Biodiversity.Web.Controllers
         }
 
         // POST: Literatures/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(
-            [Bind(
-                Include =
-                    "LiteratureId,ReferenceYear,ReferenceYearSub,ReferenceDate,TitleofArticleBooktitle,InReferenceNumber,Journal,Volume,Page,Plate,Publisher,City,Comment,PdfId,TimeStamp,ModifiedBy,ModifiedDate,CreatedBy,CreatedDate"
-                )] Literature literature)
+        public ActionResult Create(Literature literature)
         {
             if (ModelState.IsValid)
             {
-                db.Literatures.Add(literature);
-                db.SaveChanges();
+                literature.CreatedBy = "Admin";
+                literature.CreatedDate = DateTime.Now;
+                _literatureRepository.Add(literature);
                 return RedirectToAction("Index");
             }
+            var errors = ModelState.Select(x => x.Value.Errors)
+                .Where(y => y.Count > 0)
+                .ToList();
 
             return View(literature);
         }
 
         // GET: Literatures/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var literature = db.Literatures.Find(id);
+            var literature = _literatureRepository.GetById(id);
             if (literature == null)
             {
                 return HttpNotFound();
@@ -75,33 +72,32 @@ namespace Biodiversity.Web.Controllers
         }
 
         // POST: Literatures/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(
-            [Bind(
-                Include =
-                    "LiteratureId,ReferenceYear,ReferenceYearSub,ReferenceDate,TitleofArticleBooktitle,InReferenceNumber,Journal,Volume,Page,Plate,Publisher,City,Comment,PdfId,TimeStamp,ModifiedBy,ModifiedDate,CreatedBy,CreatedDate"
-                )] Literature literature)
+        public ActionResult Edit(int id, Literature literature)
         {
+            if (_literatureRepository.GetById(id) == null)
+            {
+                return HttpNotFound();
+            }
             if (ModelState.IsValid)
             {
-                db.Entry(literature).State = EntityState.Modified;
-                db.SaveChanges();
+                literature.ModifiedDate = DateTime.Now;
+                literature.ModifiedBy = "Admin";
+                _literatureRepository.Update(literature);
                 return RedirectToAction("Index");
             }
+            var errors = ModelState.Select(x => x.Value.Errors)
+                .Where(y => y.Count > 0)
+                .ToList();
             return View(literature);
         }
 
         // GET: Literatures/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var literature = db.Literatures.Find(id);
+            var literature = _literatureRepository.GetById(id);
             if (literature == null)
             {
                 return HttpNotFound();
@@ -114,19 +110,9 @@ namespace Biodiversity.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var literature = db.Literatures.Find(id);
-            db.Literatures.Remove(literature);
-            db.SaveChanges();
+            var literature = _literatureRepository.GetById(id);
+            _literatureRepository.Delete(literature);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

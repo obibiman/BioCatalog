@@ -18,6 +18,29 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             _context = context;
         }
 
+        public Task<ICollection<Author>> FindAllAsync(Expression<Func<Author, bool>> predicate = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Author> FindAsync(Expression<Func<Author, bool>> predicate = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddAsync(Author entity)
+        {
+            entity.AuthorId =
+                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.AuthorSequence;").FirstOrDefault();
+            _context.Authors.Add(entity);
+            _context.SaveChanges();
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
         public IEnumerable<Author> GetAll(Expression<Func<Author, bool>> predicate = null)
         {
             return _context.Authors.Where(predicate);
@@ -54,18 +77,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             _context.Authors.AddOrUpdate(entity);
             SaveChanges();
         }
-
-        //public void Update(Author entity)
-        //{
-        //    var entityId = entity.AuthorId;
-        //    _context.Authors.Attach(entity);
-        //    //((IObjectContextAdapter)_context).ObjectContext.ObjectStateManager.ChangeObjectState(entity,
-        //    //    EntityState.Modified);
-
-        //    SaveChanges();
-        //    //_context.SaveChanges();
-        //}
-
+        
         public void Delete(Author entity)
         {
             _context.Authors.Remove(entity);
@@ -75,29 +87,6 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         public long Count()
         {
             return _context.Authors.Count();
-        }
-
-        public Task<ICollection<Author>> FindAllAsync(Expression<Func<Author, bool>> predicate = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Author> FindAsync(Expression<Func<Author, bool>> predicate = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddAsync(Author entity)
-        {
-            entity.AuthorId =
-                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.AuthorSequence;").FirstOrDefault();
-            _context.Authors.Add(entity);
-            _context.SaveChanges();
-        }
-
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
         }
     }
 }
