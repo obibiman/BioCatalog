@@ -16,11 +16,15 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         {
             _context = context;
         }
-
         public IEnumerable<Taxon> GetAll(Expression<Func<Taxon, bool>> predicate = null)
         {
             return _context.Taxons.Where(predicate);
         }
+
+        //public IEnumerable<Taxon> GetAll(Expression<Func<Taxon, bool>> predicate = null)
+        //{
+        //    return _context.Taxons.Where(predicate);
+        //}
 
         public Taxon GetById(int id)
         {

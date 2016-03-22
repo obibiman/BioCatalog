@@ -157,14 +157,5 @@ namespace Biodiversity.Web.Controllers
             authorRepository.Delete(author);
             return RedirectToAction("Index");
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _biocontext.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }
