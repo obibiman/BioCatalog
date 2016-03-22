@@ -1,0 +1,223 @@
+﻿@model IEnumerable<Biodiversity.DataAccess.SqlDataTier.Entity.Taxon>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New Taxon", "Create")
+</p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by Author Last Name: @Html.TextBox("SearchString") <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table">
+<tr>
+    <th>
+        @Html.DisplayNameFor(model => model.TaxonName)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.TaxonType)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Sex)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Level)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Parent)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.LevelUp)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.TypeSpecies)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.OrigGenus)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.OrigSpelling)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.StartAge)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.EndAge)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.GeologicAge)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.RecentGenera)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.FossilGenera)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.RecentSpecies)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.FossilSpecies)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Page)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Illustration)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.TaxonComment)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Commonname)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.TypeForGroup)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.TaxonKey)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.PhylumKey)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.OldKey)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.OldId)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.LevelUpOld)
+    </th>
+    @*<th>
+            @Html.DisplayNameFor(model => model.TimeStamp)
+        </th>*@
+    <th>
+        @Html.DisplayNameFor(model => model.ModifiedBy)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.ModifiedDate)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.CreatedBy)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.CreatedDate)
+    </th>
+    <th></th>
+</tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TaxonName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TaxonType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sex)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Level)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Parent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LevelUp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeSpecies)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrigGenus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrigSpelling)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartAge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndAge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GeologicAge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RecentGenera)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FossilGenera)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RecentSpecies)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FossilSpecies)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Page)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Illustration)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TaxonComment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Commonname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeForGroup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TaxonKey)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhylumKey)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OldKey)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OldId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LevelUpOld)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.TimeStamp)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new {id = item.TaxonId}) |
+            @Html.ActionLink("Details", "Details", new {id = item.TaxonId}) |
+            @Html.ActionLink("Delete", "Delete", new {id = item.TaxonId})
+        </td>
+    </tr>
+}
+
+</table>

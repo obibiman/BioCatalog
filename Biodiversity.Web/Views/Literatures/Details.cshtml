@@ -1,0 +1,163 @@
+﻿@model Biodiversity.DataAccess.SqlDataTier.Entity.Literature
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Literature</h4>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ReferenceYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReferenceYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReferenceYearSub)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReferenceYearSub)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReferenceDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReferenceDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TitleofArticleBooktitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TitleofArticleBooktitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InReferenceNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InReferenceNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Journal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Journal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Volume)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Volume)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Page)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Page)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Plate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Plate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PdfId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PdfId)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.TimeStamp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeStamp)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {id = Model.LiteratureId}) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

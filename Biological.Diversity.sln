@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biodiversity.Web", "Biodiversity.Web\Biodiversity.Web.csproj", "{CACD2879-815B-4EE9-83E3-BF9F1AF984D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biodiversity.Domain", "Biodiversity.Domain\Biodiversity.Domain.csproj", "{D814E348-145C-4BA1-BE59-EECDD4FF2698}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biodiversity.DataAccess", "Biodiversity.DataAccess\Biodiversity.DataAccess.csproj", "{AAA06255-D7EA-4067-BB0E-FFA56BDF9CE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biodiversity.DataTransfer", "Biodiversity.DataTransfer\Biodiversity.DataTransfer.csproj", "{F5822DD0-FE87-440D-9552-71FCABF99E70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CACD2879-815B-4EE9-83E3-BF9F1AF984D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACD2879-815B-4EE9-83E3-BF9F1AF984D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACD2879-815B-4EE9-83E3-BF9F1AF984D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACD2879-815B-4EE9-83E3-BF9F1AF984D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D814E348-145C-4BA1-BE59-EECDD4FF2698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D814E348-145C-4BA1-BE59-EECDD4FF2698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D814E348-145C-4BA1-BE59-EECDD4FF2698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D814E348-145C-4BA1-BE59-EECDD4FF2698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAA06255-D7EA-4067-BB0E-FFA56BDF9CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAA06255-D7EA-4067-BB0E-FFA56BDF9CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAA06255-D7EA-4067-BB0E-FFA56BDF9CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAA06255-D7EA-4067-BB0E-FFA56BDF9CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5822DD0-FE87-440D-9552-71FCABF99E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5822DD0-FE87-440D-9552-71FCABF99E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5822DD0-FE87-440D-9552-71FCABF99E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5822DD0-FE87-440D-9552-71FCABF99E70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

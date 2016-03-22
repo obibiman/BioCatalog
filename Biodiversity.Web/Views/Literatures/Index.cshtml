@@ -1,0 +1,137 @@
+﻿@model IEnumerable<Biodiversity.DataAccess.SqlDataTier.Entity.Literature>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ReferenceYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReferenceYearSub)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReferenceDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TitleofArticleBooktitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InReferenceNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Journal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Volume)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Page)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Plate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PdfId)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.TimeStamp)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReferenceYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReferenceYearSub)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReferenceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleofArticleBooktitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InReferenceNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Journal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Volume)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Page)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PdfId)
+            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.TimeStamp)
+        </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.LiteratureId}) |
+                @Html.ActionLink("Details", "Details", new {id = item.LiteratureId}) |
+                @Html.ActionLink("Delete", "Delete", new {id = item.LiteratureId})
+            </td>
+        </tr>
+    }
+
+</table>
