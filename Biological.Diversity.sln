@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biodiversity.DataAccess", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biodiversity.DataTransfer", "Biodiversity.DataTransfer\Biodiversity.DataTransfer.csproj", "{F5822DD0-FE87-440D-9552-71FCABF99E70}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Biodiversity.SqlServer", "Biodiversity.SqlServer\Biodiversity.SqlServer.sqlproj", "{B78018FA-FED8-49BA-9854-4764D308EC5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biodiversity.WebAPI.Service", "Biodiversity.WebAPI.Service\Biodiversity.WebAPI.Service.csproj", "{7C637AAE-6806-4939-8042-9DE31AD3F111}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,16 @@ Global
 		{F5822DD0-FE87-440D-9552-71FCABF99E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5822DD0-FE87-440D-9552-71FCABF99E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5822DD0-FE87-440D-9552-71FCABF99E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B78018FA-FED8-49BA-9854-4764D308EC5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B78018FA-FED8-49BA-9854-4764D308EC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B78018FA-FED8-49BA-9854-4764D308EC5A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B78018FA-FED8-49BA-9854-4764D308EC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B78018FA-FED8-49BA-9854-4764D308EC5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B78018FA-FED8-49BA-9854-4764D308EC5A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7C637AAE-6806-4939-8042-9DE31AD3F111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C637AAE-6806-4939-8042-9DE31AD3F111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C637AAE-6806-4939-8042-9DE31AD3F111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C637AAE-6806-4939-8042-9DE31AD3F111}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

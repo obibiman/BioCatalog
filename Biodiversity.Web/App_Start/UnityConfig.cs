@@ -14,6 +14,7 @@ namespace Biodiversity.Web
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
             return container;
         }
+
         public static IUnityContainer BuildUnityContainer()
         {
             var container = new UnityContainer();
@@ -21,6 +22,7 @@ namespace Biodiversity.Web
             RegisterTypes(container);
             return container;
         }
+
         public static void RegisterTypes(IUnityContainer container)
         {
             // register all your components with the container here  

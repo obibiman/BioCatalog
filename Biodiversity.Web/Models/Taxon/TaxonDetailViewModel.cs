@@ -11,6 +11,7 @@ namespace Biodiversity.Web.Models.Taxon
             TaxonAuthors = new HashSet<TaxonAuthor>();
             TaxonLiteratures = new HashSet<TaxonLiterature>();
         }
+
         public int TaxonId { get; set; }
         public string TaxonName { get; set; }
         public string TaxonType { get; set; }

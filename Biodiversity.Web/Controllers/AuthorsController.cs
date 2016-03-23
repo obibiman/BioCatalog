@@ -168,20 +168,20 @@ namespace Biodiversity.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //    List<String> data = authorRepository.GetAll().Where(y => y.LastName.StartsWith(term)).Select(y => y.LastName).ToList();
-        //    IAuthorRepository authorRepository = new AuthorRepository(_biocontext);
+        //// GET: Authors
+        //public ActionResult Index()
         //{
+        //    var authorRepository = new AuthorRepository(_biocontext);
+        //    var authors = authorRepository.GetAll(y => y.AuthorId > 2000000).ToList();
+        //    var singleAuthor = authorRepository.GetById(2000095);
+        //    return View(_biocontext.Authors.ToList());
+        //}
 
         //public JsonResult GetAuthorsByLastName(string term)
-        //}
-        //    return View(_biocontext.Authors.ToList());
-        //    var singleAuthor = authorRepository.GetById(2000095);
-        //    var authors = authorRepository.GetAll(y => y.AuthorId > 2000000).ToList();
-        //    var authorRepository = new AuthorRepository(_biocontext);
         //{
-        //public ActionResult Index()
+        //    IAuthorRepository authorRepository = new AuthorRepository(_biocontext);
 
-        //// GET: Authors
+        //    List<String> data = authorRepository.GetAll().Where(y => y.LastName.StartsWith(term)).Select(y => y.LastName).ToList();
         //    return Json(data, JsonRequestBehavior.AllowGet);
         //}
     }

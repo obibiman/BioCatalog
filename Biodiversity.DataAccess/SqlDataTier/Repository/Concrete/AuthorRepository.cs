@@ -77,7 +77,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             _context.Authors.AddOrUpdate(entity);
             SaveChanges();
         }
-        
+
         public void Delete(Author entity)
         {
             _context.Authors.Remove(entity);
