@@ -15,8 +15,8 @@ namespace Biodiversity.WebAPI.Service.Controllers
 {
     public class LiteraturesController : ApiController
     {
-        private readonly ILiteratureRepository _literatureRepository;
         private readonly Biocontext _biocontext = new Biocontext();
+        private readonly ILiteratureRepository _literatureRepository;
 
         public LiteraturesController()
         {
@@ -70,7 +70,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             _literatureRepository.Add(literature);
             var response = Request.CreateResponse(HttpStatusCode.Created);
             response.StatusCode = HttpStatusCode.Created;
-            var uri = Url.Link("DefaultApi", new { id = authorListModel.LiteratureId });
+            var uri = Url.Link("DefaultApi", new {id = authorListModel.LiteratureId});
             response.Headers.Location = new Uri(uri);
             return response;
         }
@@ -84,7 +84,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             literature.LiteratureId = id;
             _literatureRepository.Update(literature);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
-            var uri = Url.Link("DefaultApi", new { id = authorListModel.LiteratureId });
+            var uri = Url.Link("DefaultApi", new {id = authorListModel.LiteratureId});
             response.Headers.Location = new Uri(uri);
             return response;
         }
@@ -93,7 +93,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
         public HttpResponseMessage Delete(int id)
         {
             var literature = _literatureRepository.GetById(id);
-            _literatureRepository.Update(literature);
+            _literatureRepository.Delete(literature);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
             return response;
         }

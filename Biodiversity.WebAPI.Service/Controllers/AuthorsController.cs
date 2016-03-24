@@ -93,7 +93,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
         public HttpResponseMessage Delete(int id)
         {
             var author = _authorRepository.GetById(id);
-            _authorRepository.Update(author);
+            _authorRepository.Delete(author);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
             return response;
         }

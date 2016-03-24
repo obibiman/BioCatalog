@@ -15,8 +15,8 @@ namespace Biodiversity.WebAPI.Service.Controllers
 {
     public class TaxonsController : ApiController
     {
-        private readonly ITaxonRepository _taxonRepository;
         private readonly Biocontext _biocontext = new Biocontext();
+        private readonly ITaxonRepository _taxonRepository;
 
         public TaxonsController()
         {
@@ -70,7 +70,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             _taxonRepository.Add(taxon);
             var response = Request.CreateResponse(HttpStatusCode.Created);
             response.StatusCode = HttpStatusCode.Created;
-            var uri = Url.Link("DefaultApi", new { id = authorListModel.TaxonId });
+            var uri = Url.Link("DefaultApi", new {id = authorListModel.TaxonId});
             response.Headers.Location = new Uri(uri);
             return response;
         }
@@ -84,7 +84,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             taxon.TaxonId = id;
             _taxonRepository.Update(taxon);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
-            var uri = Url.Link("DefaultApi", new { id = authorListModel.TaxonId });
+            var uri = Url.Link("DefaultApi", new {id = authorListModel.TaxonId});
             response.Headers.Location = new Uri(uri);
             return response;
         }
@@ -93,7 +93,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
         public HttpResponseMessage Delete(int id)
         {
             var taxon = _taxonRepository.GetById(id);
-            _taxonRepository.Update(taxon);
+            _taxonRepository.Delete(taxon);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
             return response;
         }
