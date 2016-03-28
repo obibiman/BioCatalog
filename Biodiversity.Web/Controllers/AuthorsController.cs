@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using Biodiversity.DataAccess.SqlDataTier;
@@ -26,6 +27,7 @@ namespace Biodiversity.Web.Controllers
         // GET: Authors
         public ActionResult Index(string searchString, int? page = 1)
         {
+            searchString =HttpUtility.HtmlEncode(searchString);
             IEnumerable<Author> allAuthors;
             var pageSize = 10;
             var pageNumber = (page ?? 1);
@@ -45,6 +47,7 @@ namespace Biodiversity.Web.Controllers
 
         public ActionResult Index2(string searchString, int? page = 1)
         {
+            searchString = HttpUtility.HtmlEncode(searchString);
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Author, AuthorListViewModel>());
             var mapper = config.CreateMapper();
             IEnumerable<Author> allAuthors;

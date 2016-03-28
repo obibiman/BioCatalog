@@ -63,6 +63,8 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         public void Delete(Literature entity)
         {
             _context.Literatures.Remove(entity);
+            SaveChanges();
+
         }
 
         public long Count()

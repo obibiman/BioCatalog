@@ -7,6 +7,13 @@
 
 <h2>Create</h2>
 
+@using (Html.BeginForm())
+{
+    <p>
+        Find Author by Last Name: @Html.TextBox("SearchString") <input type="submit" value="Search" />
+    </p>
+}
+
 
 @using (Html.BeginForm())
 {

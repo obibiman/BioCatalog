@@ -44,7 +44,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var transformedAuthor = mapper.Map<Author, AuthorListModel>(author);
             if (transformedAuthor == null)
             {
-                return NotFound();
+                return BadRequest("No author found");
             }
             return Ok(transformedAuthor);
         }

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using Biodiversity.DataAccess.SqlDataTier;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Concrete;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
+using Biodiversity.Web.Models.Literature;
 
 namespace Biodiversity.Web.Controllers
 {
@@ -18,11 +21,33 @@ namespace Biodiversity.Web.Controllers
             _literatureRepository = new LiteratureRepository(_biocontext);
         }
 
-        // GET: Literatures
-        public ActionResult Index()
+        //// GET: Literatures
+        //public ActionResult Index()
+        //{
+        //    return View(_literatureRepository.GetAll().ToList());
+        //}
+
+        public ActionResult Index(string searchString)
         {
-            return View(_literatureRepository.GetAll().ToList());
+            IEnumerable<Literature> allLiteratures;
+            List<LiteratureListViewModel> literatureListViewModels;
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Literature, LiteratureListViewModel>());
+            var mapper = config.CreateMapper();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                allLiteratures = _literatureRepository.GetAll().AsEnumerable()
+                    .Where(s => s.TitleofArticleBooktitle.ToUpper()
+                        .StartsWith(searchString.ToUpper()));
+                literatureListViewModels = mapper.Map<IEnumerable<Literature>, List<LiteratureListViewModel>>(allLiteratures);
+            }
+            else
+            {
+                allLiteratures = _literatureRepository.GetAll().AsEnumerable();
+                literatureListViewModels = mapper.Map<IEnumerable<Literature>, List<LiteratureListViewModel>>(allLiteratures);
+            }
+            return View(literatureListViewModels);
         }
+
 
         // GET: Literatures/Details/5
         public ActionResult Details(int id)

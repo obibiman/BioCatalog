@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Biodiversity.DataAccess.SqlDataTier.Entity.Literature>
+﻿@model IEnumerable<Biodiversity.Web.Models.Literature.LiteratureListViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -8,8 +8,16 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New Literature Record", "Create")
 </p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by Literature Title: @Html.TextBox("SearchString") <input type="submit" value="Search" />
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
