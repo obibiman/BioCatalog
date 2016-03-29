@@ -62,9 +62,24 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 
         public void Delete(Literature entity)
         {
-            _context.Literatures.Remove(entity);
-            SaveChanges();
+            var eId = entity.LiteratureId;
+            var litAuthors = (from la in _context.LiteratureAuthors where la.LiteratureId == entity.LiteratureId select la)
+               .ToList();
+            foreach (var litAuthor in litAuthors)
+            {
+                 _context.LiteratureAuthors.Remove(litAuthor);
+            }
+               
+            var taxonLiteratures = (from tl in _context.TaxonLiteratures where tl.LiteratureId == entity.LiteratureId select tl)
+            .ToList();
+            foreach (var taxonLiterature in taxonLiteratures)
+            {
+                _context.TaxonLiteratures.Remove(taxonLiterature);
+            }
 
+            _context.Literatures.Remove(entity);
+           
+            SaveChanges();
         }
 
         public long Count()

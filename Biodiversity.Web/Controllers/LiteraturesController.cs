@@ -136,6 +136,7 @@ namespace Biodiversity.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var literature = _literatureRepository.GetById(id);
+            //var taxonLiteratureRepository = new Taxonl
             _literatureRepository.Delete(literature);
             return RedirectToAction("Index");
         }
