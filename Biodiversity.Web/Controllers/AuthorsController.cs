@@ -17,11 +17,12 @@ namespace Biodiversity.Web.Controllers
     public class AuthorsController : Controller
     {
         private readonly IAuthorRepository _authorRepository;
-        private readonly Biocontext _biocontext = new Biocontext();
+        //private readonly Biocontext _biocontext = new Biocontext();
 
-        public AuthorsController()
+        public AuthorsController(IAuthorRepository authorRepository)
         {
-            _authorRepository = new AuthorRepository(_biocontext);
+            //_authorRepository = new AuthorRepository(_biocontext);
+            _authorRepository = authorRepository;
         }
 
         // GET: Authors
@@ -72,13 +73,13 @@ namespace Biodiversity.Web.Controllers
         }
 
         // GET: Authors/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var author = _biocontext.Authors.Find(id);
+            var author = _authorRepository.GetById(id);
             if (author == null)
             {
                 return HttpNotFound();
@@ -113,13 +114,13 @@ namespace Biodiversity.Web.Controllers
         }
 
         // GET: Authors/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var author = _biocontext.Authors.Find(id);
+            var author = _authorRepository.GetById(id);
             if (author == null)
             {
                 return HttpNotFound();

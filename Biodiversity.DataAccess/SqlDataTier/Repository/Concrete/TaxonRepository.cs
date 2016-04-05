@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Migrations;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
@@ -44,6 +46,43 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 
         public void Add(Taxon entity)
         {
+            var inputValue = new SqlParameter
+            {
+                ParameterName = "@SequenceName",
+                SqlDbType = SqlDbType.NVarChar,
+                Size = 50,
+                Value = SequenceIdentifier.TaxonSequence,
+                Direction = ParameterDirection.Input
+            };
+            var outParam = new SqlParameter
+            {
+                ParameterName = "@SequenceValue",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+            var returnCode = new SqlParameter
+            {
+                ParameterName = "@SequenceOutput",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+
+            var data = _context.Database
+                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT", returnCode, inputValue, outParam)
+                .FirstOrDefaultAsync();
+
+            entity.TaxonId = data.Result; entity.CreatedDate = DateTime.Now;
+            entity.ModifiedDate = null;
+            entity.ModifiedBy = string.Empty;
+            entity.CreatedDate=DateTime.Now;
+            entity.CreatedBy = "Admin";
+            _context.Taxons.Add(entity);
+            SaveChanges();
+        }
+
+        [Obsolete]
+        public void Add_Old(Taxon entity)
+        {
             entity.TaxonId =
                 _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.TaxonSequence;").FirstOrDefault();
             entity.CreatedDate = DateTime.Now;
@@ -52,16 +91,13 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             SaveChanges();
         }
 
-        //public void Update(Taxon entity)
-        //{
-        //    _context.Taxons.Attach(entity);
-        //    ((IObjectContextAdapter)_context).ObjectContext.ObjectStateManager.ChangeObjectState(entity,
-        //        EntityState.Modified);
-        //}
-
         public void Update(Taxon entity)
         {
-            var entityId = entity.TaxonId;
+            var existingEntity = GetById(entity.TaxonId);
+            if (existingEntity == null)
+            {
+                return;
+            }
             entity.ModifiedDate = DateTime.Now;
             entity.ModifiedBy = "Admin";
             _context.Taxons.AddOrUpdate(entity);

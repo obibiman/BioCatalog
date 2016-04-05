@@ -62,5 +62,6 @@
     <None Include="002 - TableCreate.sql" />
     <None Include="003 - SequenceCreate.sql" />
     <None Include="001 - DatabaseCreate.sql" />
+    <None Include="SequenceStoredProcedureCreate.sql" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Migrations;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
@@ -42,7 +44,45 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             return _context.Literatures.SingleOrDefault(predicate);
         }
 
+     
         public void Add(Literature entity)
+        {
+            var inputValue = new SqlParameter
+            {
+                ParameterName = "@SequenceName",
+                SqlDbType = SqlDbType.NVarChar,
+                Size = 50,
+                Value = SequenceIdentifier.LiteratureSequence,
+                Direction = ParameterDirection.Input
+            };
+            var outParam = new SqlParameter
+            {
+                ParameterName = "@SequenceValue",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+            var returnCode = new SqlParameter
+            {
+                ParameterName = "@SequenceOutput",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+
+            var data = _context.Database
+                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT", returnCode, inputValue, outParam)
+                .FirstOrDefaultAsync();
+
+            entity.LiteratureId = data.Result;
+            entity.ModifiedDate = null;
+            entity.ModifiedBy = string.Empty;
+            entity.CreatedDate = DateTime.Now;
+            entity.CreatedBy = "Admin";
+            _context.Literatures.Add(entity);
+            SaveChanges();
+        }
+
+        [Obsolete]
+        public void Add_Old(Literature entity)
         {
             entity.LiteratureId =
                 _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.LiteratureSequence;").FirstOrDefault();
@@ -54,6 +94,11 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 
         public void Update(Literature entity)
         {
+            var existingEntity = GetById(entity.LiteratureId);
+            if (existingEntity == null)
+            {
+                return;
+            }
             entity.ModifiedDate = DateTime.Now;
             entity.ModifiedBy = "Admin";
             _context.Literatures.AddOrUpdate(entity);

@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -30,10 +33,40 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 
         public void AddAsync(Author entity)
         {
-            entity.AuthorId =
-                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.AuthorSequence;").FirstOrDefault();
+            var inputValue = new SqlParameter
+            {
+                ParameterName = "@SequenceName",
+                SqlDbType = SqlDbType.NVarChar,
+                Size = 50,
+                Value = SequenceIdentifier.AuthorSequence,
+                Direction = ParameterDirection.Input
+            };
+            var outParam = new SqlParameter
+            {
+                ParameterName = "@SequenceValue",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+            var returnCode = new SqlParameter
+            {
+                ParameterName = "@SequenceOutput",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+
+            var data = _context.Database
+                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT", returnCode, inputValue, outParam)
+                .FirstOrDefaultAsync();
+
+            entity.AuthorId = data.Result;
+
+            entity.ModifiedDate = null;
+            entity.ModifiedBy = string.Empty;
+            entity.CreatedDate = DateTime.Now;
+            entity.CreatedBy = "Admin";
+
             _context.Authors.Add(entity);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public void SaveChanges()
@@ -63,16 +96,57 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 
         public void Add(Author entity)
         {
-            entity.AuthorId =
-                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.AuthorSequence;").FirstOrDefault();
+            var inputValue = new SqlParameter
+            {
+                ParameterName = "@SequenceName",
+                SqlDbType = SqlDbType.NVarChar,
+                Size = 50,
+                Value = SequenceIdentifier.AuthorSequence,
+                Direction = ParameterDirection.Input
+            };
+            var outParam = new SqlParameter
+            {
+                ParameterName = "@SequenceValue",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+            var returnCode = new SqlParameter
+            {
+                ParameterName = "@SequenceOutput",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+
+            var data = _context.Database
+                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT", returnCode, inputValue, outParam)
+                .FirstOrDefaultAsync();
+
+            entity.AuthorId = data.Result;
+
+            entity.ModifiedDate = null;
+            entity.ModifiedBy = string.Empty;
+            entity.CreatedDate = DateTime.Now;
+            entity.CreatedBy = "Admin";
+            _context.Authors.Add(entity);
+            SaveChanges();
+        }
+
+        [Obsolete]
+        public void Add_Old(Author entity)
+        {
+            entity.AuthorId = _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.AuthorSequence;").FirstOrDefault();
             entity.CreatedDate = DateTime.Now;
             _context.Authors.Add(entity);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public void Update(Author entity)
         {
-            var entityId = entity.AuthorId;
+            var existingEntity = GetById(entity.AuthorId);
+            if (existingEntity == null)
+            {
+                return;
+            }
             entity.ModifiedDate = DateTime.Now;
             _context.Authors.AddOrUpdate(entity);
             SaveChanges();
@@ -81,7 +155,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         public void Delete(Author entity)
         {
             _context.Authors.Remove(entity);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public long Count()
