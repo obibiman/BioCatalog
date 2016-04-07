@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     <p>
-        Find Author by Last Name: @Html.TextBox("SearchString") <input type="submit" value="Search" />
+        Find Author by Last Name: @Html.TextBox("SearchString") <input type="submit" value="Search"/>
     </p>
 }
 
@@ -19,7 +19,7 @@
 {
     @Html.AntiForgeryToken()
 
- <div class="form-vertical">
+    <div class="form-vertical">
         <h4>Literature</h4>
         <hr/>
         @Html.ValidationSummary(true, "", new {@class = "text-danger"})

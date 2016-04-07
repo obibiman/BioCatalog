@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
-using Biodiversity.DataAccess.SqlDataTier;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
-using Biodiversity.DataAccess.SqlDataTier.Repository.Concrete;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
 using Biodiversity.Web.Models.Author;
 using PagedList;
@@ -16,33 +13,30 @@ namespace Biodiversity.Web.Controllers
 {
     public class AuthorsController : Controller
     {
-        private readonly IAuthorRepository _authorRepository;
-        //private readonly Biocontext _biocontext = new Biocontext();
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AuthorsController(IAuthorRepository authorRepository)
+        public AuthorsController(IUnitOfWork unitOfWork)
         {
-            //_authorRepository = new AuthorRepository(_biocontext);
-            _authorRepository = authorRepository;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: Authors
         public ActionResult Index(string searchString, int? page = 1)
         {
-            searchString =HttpUtility.HtmlEncode(searchString);
+            searchString = HttpUtility.HtmlEncode(searchString);
             IEnumerable<Author> allAuthors;
             var pageSize = 10;
             var pageNumber = (page ?? 1);
             if (!string.IsNullOrEmpty(searchString))
             {
-                allAuthors = _authorRepository.GetAll().AsEnumerable()
+                allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable()
                     .Where(s => s.LastName.ToUpper()
                         .StartsWith(searchString.ToUpper()));
             }
             else
             {
-                allAuthors = _authorRepository.GetAll().AsEnumerable();
+                allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable();
             }
-
             return View(allAuthors.ToPagedList(pageNumber, pageSize));
         }
 
@@ -57,7 +51,7 @@ namespace Biodiversity.Web.Controllers
             var pageNumber = (page ?? 1);
             if (!string.IsNullOrEmpty(searchString))
             {
-                allAuthors = _authorRepository.GetAll().AsEnumerable()
+                allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable()
                     .Where(s => s.LastName.ToUpper()
                         .StartsWith(searchString.ToUpper()));
 
@@ -65,7 +59,7 @@ namespace Biodiversity.Web.Controllers
             }
             else
             {
-                allAuthors = _authorRepository.GetAll().AsEnumerable();
+                allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable();
                 filteredAuthors = mapper.Map<IEnumerable<Author>, List<AuthorListViewModel>>(allAuthors);
             }
 
@@ -75,11 +69,7 @@ namespace Biodiversity.Web.Controllers
         // GET: Authors/Details/5
         public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var author = _authorRepository.GetById(id);
+            var author = _unitOfWork.AuthorRepository.GetById(id);
             if (author == null)
             {
                 return HttpNotFound();
@@ -103,7 +93,9 @@ namespace Biodiversity.Web.Controllers
             if (ModelState.IsValid)
             {
                 author.CreatedDate = DateTime.Now;
-                _authorRepository.Add(author);
+                _unitOfWork.AuthorRepository.Add(author);
+                _unitOfWork.Complete();
+
                 return RedirectToAction("Index");
             }
             var errors = ModelState.Select(x => x.Value.Errors)
@@ -116,11 +108,7 @@ namespace Biodiversity.Web.Controllers
         // GET: Authors/Edit/5
         public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var author = _authorRepository.GetById(id);
+            var author = _unitOfWork.AuthorRepository.GetById(id);
             if (author == null)
             {
                 return HttpNotFound();
@@ -142,7 +130,8 @@ namespace Biodiversity.Web.Controllers
             if (ModelState.IsValid)
             {
                 author.ModifiedDate = DateTime.Now;
-                _authorRepository.Update(author);
+                _unitOfWork.AuthorRepository.Update(author);
+                _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
             var errors = ModelState.Select(x => x.Value.Errors)
@@ -154,7 +143,7 @@ namespace Biodiversity.Web.Controllers
         // GET: Authors/Delete/5
         public ActionResult Delete(int id)
         {
-            var author = _authorRepository.GetById(id);
+            var author = _unitOfWork.AuthorRepository.GetById(id);
             if (author == null)
             {
                 return HttpNotFound();
@@ -167,26 +156,10 @@ namespace Biodiversity.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var author = _authorRepository.GetById(id);
-            _authorRepository.Delete(author);
+            var author = _unitOfWork.AuthorRepository.GetById(id);
+            _unitOfWork.AuthorRepository.Delete(author);
+            _unitOfWork.Complete();
             return RedirectToAction("Index");
         }
-
-        //    List<String> data = authorRepository.GetAll().Where(y => y.LastName.StartsWith(term)).Select(y => y.LastName).ToList();
-        //    IAuthorRepository authorRepository = new AuthorRepository(_biocontext);
-        //{
-
-        //public JsonResult GetAuthorsByLastName(string term)
-        //}
-        //    return View(_biocontext.Authors.ToList());
-        //    var singleAuthor = authorRepository.GetById(2000095);
-        //    var authors = authorRepository.GetAll(y => y.AuthorId > 2000000).ToList();
-        //    var authorRepository = new AuthorRepository(_biocontext);
-        //{
-        //public ActionResult Index()
-
-        //// GET: Authors
-        //    return Json(data, JsonRequestBehavior.AllowGet);
-        //}
     }
 }

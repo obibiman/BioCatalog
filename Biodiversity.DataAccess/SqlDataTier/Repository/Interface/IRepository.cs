@@ -14,5 +14,8 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Interface
         void Update(T entity);
         void Delete(T entity);
         long Count();
+        //
+        void AddRange(IEnumerable<T> entities);
+        void RemoveRange(IEnumerable<T> entities);
     }
 }

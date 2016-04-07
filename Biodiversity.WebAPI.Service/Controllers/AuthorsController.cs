@@ -5,9 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
-using Biodiversity.DataAccess.SqlDataTier;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
-using Biodiversity.DataAccess.SqlDataTier.Repository.Concrete;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
 using Biodiversity.WebAPI.Service.Models.Author;
 
@@ -15,12 +13,11 @@ namespace Biodiversity.WebAPI.Service.Controllers
 {
     public class AuthorsController : ApiController
     {
-        private readonly IAuthorRepository _authorRepository;
-        private readonly Biocontext _biocontext = new Biocontext();
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AuthorsController()
+        public AuthorsController(IUnitOfWork unitOfWork)
         {
-            _authorRepository = new AuthorRepository(_biocontext);
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Authors
@@ -29,7 +26,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Author, AuthorListModel>());
             var mapper = config.CreateMapper();
 
-            var authors = _authorRepository.GetAll().AsEnumerable();
+            var authors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable();
             var authorListModels = mapper.Map<IEnumerable<Author>, List<AuthorListModel>>(authors);
             return authorListModels;
         }
@@ -40,7 +37,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Author, AuthorListModel>());
             var mapper = config.CreateMapper();
 
-            var author = _authorRepository.GetById(id);
+            var author = _unitOfWork.AuthorRepository.GetById(id);
             var transformedAuthor = mapper.Map<Author, AuthorListModel>(author);
             if (transformedAuthor == null)
             {
@@ -56,7 +53,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
         //    var config = new MapperConfiguration(cfg => cfg.CreateMap<Author, AuthorListModel>());
         //    var mapper = config.CreateMapper();
 
-        //    var author = _authorRepository.GetById(id);
+        //    var author = _unitOfWork.AuthorRepository.GetById(id);
         //    var transformedAuthor = mapper.Map<Author, AuthorListModel>(author);
         //    return transformedAuthor;
         //}
@@ -67,7 +64,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<AuthorListModel, Author>());
             var mapper = config.CreateMapper();
             var transformedAuthor = mapper.Map<AuthorListModel, Author>(authorListModel);
-            _authorRepository.Add(transformedAuthor);
+            _unitOfWork.AuthorRepository.Add(transformedAuthor);
             var response = Request.CreateResponse(HttpStatusCode.Created);
             response.StatusCode = HttpStatusCode.Created;
             var uri = Url.Link("DefaultApi", new {id = authorListModel.AuthorId});
@@ -82,7 +79,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var mapper = config.CreateMapper();
             var transformedAuthor = mapper.Map<AuthorListModel, Author>(authorListModel);
             transformedAuthor.AuthorId = id;
-            _authorRepository.Update(transformedAuthor);
+            _unitOfWork.AuthorRepository.Update(transformedAuthor);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
             var uri = Url.Link("DefaultApi", new {id = authorListModel.AuthorId});
             response.Headers.Location = new Uri(uri);
@@ -92,8 +89,8 @@ namespace Biodiversity.WebAPI.Service.Controllers
         // DELETE: api/Authors/5
         public HttpResponseMessage Delete(int id)
         {
-            var author = _authorRepository.GetById(id);
-            _authorRepository.Delete(author);
+            var author = _unitOfWork.AuthorRepository.GetById(id);
+            _unitOfWork.AuthorRepository.Delete(author);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
             return response;
         }

@@ -26,4 +26,3 @@
 			SELECT @SequenceValue = NEXT VALUE FOR dbo.TaxonSequence;
 
     */
-

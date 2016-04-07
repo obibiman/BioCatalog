@@ -10,11 +10,11 @@ using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
 
 namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 {
-    public class TaxonRepository : IRepository<Taxon>, ITaxonRepository
+    public class TaxonRepository : Repository<Taxon>, ITaxonRepository
     {
         private readonly Biocontext _context;
 
-        public TaxonRepository(Biocontext context)
+        public TaxonRepository(Biocontext context) : base(context)
         {
             _context = context;
         }
@@ -68,27 +68,18 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             };
 
             var data = _context.Database
-                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT", returnCode, inputValue, outParam)
+                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT",
+                    returnCode, inputValue, outParam)
                 .FirstOrDefaultAsync();
 
-            entity.TaxonId = data.Result; entity.CreatedDate = DateTime.Now;
+            entity.TaxonId = data.Result;
+            entity.CreatedDate = DateTime.Now;
             entity.ModifiedDate = null;
             entity.ModifiedBy = string.Empty;
-            entity.CreatedDate=DateTime.Now;
-            entity.CreatedBy = "Admin";
-            _context.Taxons.Add(entity);
-            SaveChanges();
-        }
-
-        [Obsolete]
-        public void Add_Old(Taxon entity)
-        {
-            entity.TaxonId =
-                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.TaxonSequence;").FirstOrDefault();
             entity.CreatedDate = DateTime.Now;
             entity.CreatedBy = "Admin";
             _context.Taxons.Add(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public void Update(Taxon entity)
@@ -101,13 +92,13 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             entity.ModifiedDate = DateTime.Now;
             entity.ModifiedBy = "Admin";
             _context.Taxons.AddOrUpdate(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public void Delete(Taxon entity)
         {
             _context.Taxons.Remove(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public long Count()
@@ -118,6 +109,17 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        [Obsolete]
+        public void Add_Old(Taxon entity)
+        {
+            entity.TaxonId =
+                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.TaxonSequence;").FirstOrDefault();
+            entity.CreatedDate = DateTime.Now;
+            entity.CreatedBy = "Admin";
+            _context.Taxons.Add(entity);
+            //SaveChanges();
         }
     }
 }

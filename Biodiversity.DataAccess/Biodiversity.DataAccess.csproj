@@ -70,6 +70,7 @@
     <Compile Include="SqlDataTier\Repository\Concrete\Repository.cs" />
     <Compile Include="SqlDataTier\Repository\Concrete\TaxonRepository.cs" />
     <Compile Include="SqlDataTier\Repository\Interface\IRepository.cs" />
+    <Compile Include="SqlDataTier\Repository\Interface\IUnitOfWork.cs" />
     <Compile Include="SqlDataTier\Repository\UnitOfWork\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

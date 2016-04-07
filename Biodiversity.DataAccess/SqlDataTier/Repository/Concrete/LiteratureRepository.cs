@@ -10,11 +10,11 @@ using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
 
 namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 {
-    public class LiteratureRepository : IRepository<Literature>, ILiteratureRepository
+    public class LiteratureRepository : Repository<Literature>, ILiteratureRepository
     {
         private readonly Biocontext _context;
 
-        public LiteratureRepository(Biocontext context)
+        public LiteratureRepository(Biocontext context) : base(context)
         {
             _context = context;
         }
@@ -44,7 +44,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             return _context.Literatures.SingleOrDefault(predicate);
         }
 
-     
+
         public void Add(Literature entity)
         {
             var inputValue = new SqlParameter
@@ -69,7 +69,8 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             };
 
             var data = _context.Database
-                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT", returnCode, inputValue, outParam)
+                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT",
+                    returnCode, inputValue, outParam)
                 .FirstOrDefaultAsync();
 
             entity.LiteratureId = data.Result;
@@ -78,18 +79,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             entity.CreatedDate = DateTime.Now;
             entity.CreatedBy = "Admin";
             _context.Literatures.Add(entity);
-            SaveChanges();
-        }
-
-        [Obsolete]
-        public void Add_Old(Literature entity)
-        {
-            entity.LiteratureId =
-                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.LiteratureSequence;").FirstOrDefault();
-            entity.CreatedDate = DateTime.Now;
-            entity.ModifiedDate = null;
-            _context.Literatures.Add(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public void Update(Literature entity)
@@ -102,34 +92,45 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             entity.ModifiedDate = DateTime.Now;
             entity.ModifiedBy = "Admin";
             _context.Literatures.AddOrUpdate(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public void Delete(Literature entity)
         {
             var eId = entity.LiteratureId;
-            var litAuthors = (from la in _context.LiteratureAuthors where la.LiteratureId == entity.LiteratureId select la)
-               .ToList();
+            var litAuthors =
+                (from la in _context.LiteratureAuthors where la.LiteratureId == entity.LiteratureId select la)
+                    .ToList();
             foreach (var litAuthor in litAuthors)
             {
-                 _context.LiteratureAuthors.Remove(litAuthor);
+                _context.LiteratureAuthors.Remove(litAuthor);
             }
-               
-            var taxonLiteratures = (from tl in _context.TaxonLiteratures where tl.LiteratureId == entity.LiteratureId select tl)
-            .ToList();
+
+            var taxonLiteratures =
+                (from tl in _context.TaxonLiteratures where tl.LiteratureId == entity.LiteratureId select tl)
+                    .ToList();
             foreach (var taxonLiterature in taxonLiteratures)
             {
                 _context.TaxonLiteratures.Remove(taxonLiterature);
             }
-
             _context.Literatures.Remove(entity);
-           
-            SaveChanges();
+            //SaveChanges();
         }
 
         public long Count()
         {
             return _context.Literatures.Count();
+        }
+
+        [Obsolete]
+        public void Add_Old(Literature entity)
+        {
+            entity.LiteratureId =
+                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.LiteratureSequence;").FirstOrDefault();
+            entity.CreatedDate = DateTime.Now;
+            entity.ModifiedDate = null;
+            _context.Literatures.Add(entity);
+            //SaveChanges();
         }
     }
 }

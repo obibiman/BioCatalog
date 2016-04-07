@@ -10,59 +10,69 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly Biocontext _context;
-        private readonly DbSet<T> _dbSet;
+        private readonly DbContext _context;
+        //private readonly DbSet<T> _dbSet;
 
-        public Repository(Biocontext context)
+        public Repository(DbContext context)
         {
             _context = context;
-            _dbSet = _context.Set<T>();
         }
 
         public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate = null)
         {
+            var retVal = new List<T>() as IEnumerable<T>;
             if (predicate != null)
             {
-                return _dbSet.Where(predicate);
+                retVal = _context.Set<T>().Where(predicate);
             }
-            return _dbSet.AsEnumerable();
+            return retVal;
         }
 
         public T Get(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.FirstOrDefault(predicate);
+            return _context.Set<T>().FirstOrDefault(predicate);
         }
 
         public T GetById(int Id)
         {
-            return _dbSet.Find(Id);
+            return _context.Set<T>().Find(Id);
         }
 
         public ICollection<T> GetAll()
         {
-            return _dbSet.AsEnumerable().ToList();
+            return _context.Set<T>().AsEnumerable().ToList();
         }
 
         public void Add(T entity)
         {
-            _dbSet.Add(entity);
+            _context.Set<T>().Add(entity);
         }
 
         public void Update(T entity)
         {
-            _dbSet.Attach(entity);
+            _context.Set<T>().Attach(entity);
             ((IObjectContextAdapter) _context).ObjectContext.
                 ObjectStateManager.ChangeObjectState(entity, EntityState.Modified);
         }
 
         public void Delete(T entity)
         {
-            _dbSet.Remove(entity);
+            _context.Set<T>().Remove(entity);
         }
 
         public long Count()
         {
-            return _dbSet.Count();
+            return _context.Set<T>().Count();
+        }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().AddRange(entities);
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
         }
     }
 }

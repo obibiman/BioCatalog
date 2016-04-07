@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Migrations;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,11 +11,11 @@ using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
 
 namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 {
-    public class AuthorRepository : IRepository<Author>, IAuthorRepository
+    public class AuthorRepository : Repository<Author>, IAuthorRepository
     {
         protected Biocontext _context;
 
-        public AuthorRepository(Biocontext context)
+        public AuthorRepository(Biocontext context) : base(context)
         {
             _context = context;
         }
@@ -55,7 +54,8 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             };
 
             var data = _context.Database
-                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT", returnCode, inputValue, outParam)
+                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT",
+                    returnCode, inputValue, outParam)
                 .FirstOrDefaultAsync();
 
             entity.AuthorId = data.Result;
@@ -66,7 +66,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             entity.CreatedBy = "Admin";
 
             _context.Authors.Add(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public void SaveChanges()
@@ -94,7 +94,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             return _context.Authors.SingleOrDefault(predicate);
         }
 
-        public void Add(Author entity)
+        public new void Add(Author entity)
         {
             var inputValue = new SqlParameter
             {
@@ -118,7 +118,8 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             };
 
             var data = _context.Database
-                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT", returnCode, inputValue, outParam)
+                .SqlQuery<int>("exec @SequenceOutput = sp_BiologyCatalogSequence @SequenceName, @SequenceValue OUT",
+                    returnCode, inputValue, outParam)
                 .FirstOrDefaultAsync();
 
             entity.AuthorId = data.Result;
@@ -128,16 +129,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             entity.CreatedDate = DateTime.Now;
             entity.CreatedBy = "Admin";
             _context.Authors.Add(entity);
-            SaveChanges();
-        }
-
-        [Obsolete]
-        public void Add_Old(Author entity)
-        {
-            entity.AuthorId = _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.AuthorSequence;").FirstOrDefault();
-            entity.CreatedDate = DateTime.Now;
-            _context.Authors.Add(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public void Update(Author entity)
@@ -149,18 +141,28 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             }
             entity.ModifiedDate = DateTime.Now;
             _context.Authors.AddOrUpdate(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public void Delete(Author entity)
         {
             _context.Authors.Remove(entity);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public long Count()
         {
             return _context.Authors.Count();
+        }
+
+        [Obsolete]
+        public void Add_Old(Author entity)
+        {
+            entity.AuthorId =
+                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.AuthorSequence;").FirstOrDefault();
+            entity.CreatedDate = DateTime.Now;
+            _context.Authors.Add(entity);
+            //SaveChanges();
         }
     }
 }

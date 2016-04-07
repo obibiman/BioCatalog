@@ -5,9 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
-using Biodiversity.DataAccess.SqlDataTier;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
-using Biodiversity.DataAccess.SqlDataTier.Repository.Concrete;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
 using Biodiversity.WebAPI.Service.Models.Taxon;
 
@@ -15,12 +13,11 @@ namespace Biodiversity.WebAPI.Service.Controllers
 {
     public class TaxonsController : ApiController
     {
-        private readonly Biocontext _biocontext = new Biocontext();
-        private readonly ITaxonRepository _taxonRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TaxonsController()
+        public TaxonsController(IUnitOfWork unitOfWork)
         {
-            _taxonRepository = new TaxonRepository(_biocontext);
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Taxons
@@ -29,7 +26,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Taxon, TaxonListModel>());
             var mapper = config.CreateMapper();
 
-            var authors = _taxonRepository.GetAll().AsEnumerable();
+            var authors = _unitOfWork.TaxonRepository.GetAll().AsEnumerable();
             var taxonListModels = mapper.Map<IEnumerable<Taxon>, List<TaxonListModel>>(authors);
             return taxonListModels;
         }
@@ -40,7 +37,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Taxon, TaxonListModel>());
             var mapper = config.CreateMapper();
 
-            var taxon = _taxonRepository.GetById(id);
+            var taxon = _unitOfWork.TaxonRepository.GetById(id);
             var taxonListModel = mapper.Map<Taxon, TaxonListModel>(taxon);
             if (taxonListModel == null)
             {
@@ -67,7 +64,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<TaxonListModel, Taxon>());
             var mapper = config.CreateMapper();
             var taxon = mapper.Map<TaxonListModel, Taxon>(authorListModel);
-            _taxonRepository.Add(taxon);
+            _unitOfWork.TaxonRepository.Add(taxon);
             var response = Request.CreateResponse(HttpStatusCode.Created);
             response.StatusCode = HttpStatusCode.Created;
             var uri = Url.Link("DefaultApi", new {id = authorListModel.TaxonId});
@@ -82,7 +79,7 @@ namespace Biodiversity.WebAPI.Service.Controllers
             var mapper = config.CreateMapper();
             var taxon = mapper.Map<TaxonListModel, Taxon>(authorListModel);
             taxon.TaxonId = id;
-            _taxonRepository.Update(taxon);
+            _unitOfWork.TaxonRepository.Update(taxon);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
             var uri = Url.Link("DefaultApi", new {id = authorListModel.TaxonId});
             response.Headers.Location = new Uri(uri);
@@ -92,8 +89,8 @@ namespace Biodiversity.WebAPI.Service.Controllers
         // DELETE: api/Taxons/5
         public HttpResponseMessage Delete(int id)
         {
-            var taxon = _taxonRepository.GetById(id);
-            _taxonRepository.Delete(taxon);
+            var taxon = _unitOfWork.TaxonRepository.GetById(id);
+            _unitOfWork.TaxonRepository.Delete(taxon);
             var response = Request.CreateResponse(HttpStatusCode.NoContent);
             return response;
         }

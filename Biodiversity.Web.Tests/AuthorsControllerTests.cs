@@ -12,21 +12,23 @@ namespace Biodiversity.Web.Tests
     [TestClass]
     public class AuthorsControllerTests
     {
-        Mock<IAuthorRepository> _authorRepository ;
-        AuthorsController _authorsController ;
+        private Mock<IAuthorRepository> _authorRepository;
+        private AuthorsController _authorsController;
+        private Mock<IUnitOfWork> _unitOfWork;
 
         [TestInitialize]
         public void SetUp()
         {
+            _unitOfWork = new Mock<IUnitOfWork>();
             _authorRepository = new Mock<IAuthorRepository>();
-            _authorsController = new AuthorsController(_authorRepository.Object);
+            _authorsController = new AuthorsController(_unitOfWork.Object);
         }
 
         [TestMethod]
         public void When_List_of_Authors_Is_Requested_Returns_List()
         {
             //Arrange
-            List<Author> listAuthor = new List<Author>
+            var listAuthor = new List<Author>
             {
                 new Author
                 {
@@ -69,14 +71,13 @@ namespace Biodiversity.Web.Tests
                 }
             };
 
-            _authorRepository.Setup(y => y.GetAll()).Returns(listAuthor);
+            _unitOfWork.Setup(y => y.AuthorRepository.GetAll()).Returns(listAuthor);
 
             //Act            
             var result = _authorsController.Index(string.Empty, 1);
 
             //Assert
-            _authorRepository.Verify(y => y.GetAll(), Times.Once());
-           
+            _unitOfWork.Verify(y => y.AuthorRepository.GetAll(), Times.Once());
         }
 
         [TestMethod]
@@ -97,13 +98,13 @@ namespace Biodiversity.Web.Tests
                 CreatedBy = "System Admin"
             };
 
-            _authorRepository.Setup(y => y.Add(author));
+            _unitOfWork.Setup(y => y.AuthorRepository.Add(author));
 
             //Act            
             var result = _authorsController.Create(author) as RedirectToRouteResult;
 
             //Assert
-            _authorRepository.Verify(y => y.Add(author), Times.Once());
+            _unitOfWork.Verify(y => y.AuthorRepository.Add(author), Times.Once());
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
     }
