@@ -34,7 +34,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             return (from auth in _context.Literatures where auth.LiteratureId == id select auth).SingleOrDefault();
         }
 
-        public ICollection<Literature> GetAll()
+        public IEnumerable<Literature> GetAll()
         {
             return _context.Literatures.ToList();
         }

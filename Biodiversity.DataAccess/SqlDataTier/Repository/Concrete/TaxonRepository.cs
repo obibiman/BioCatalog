@@ -34,7 +34,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             return (from auth in _context.Taxons where auth.TaxonId == id select auth).SingleOrDefault();
         }
 
-        public ICollection<Taxon> GetAll()
+        public IEnumerable<Taxon> GetAll()
         {
             return _context.Taxons.ToList();
         }

@@ -20,7 +20,7 @@ namespace Biodiversity.Web.Services
         //    return authors;
         //}
 
-        public ICollection<Author> GetAuthors()
+        public IEnumerable<Author> GetAuthors()
         {
             var authors = _repository.GetAll();
             return authors;

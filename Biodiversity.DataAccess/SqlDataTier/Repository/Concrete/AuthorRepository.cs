@@ -20,7 +20,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             _context = context;
         }
 
-        public Task<ICollection<Author>> FindAllAsync(Expression<Func<Author, bool>> predicate = null)
+        public Task<IEnumerable<Author>> FindAllAsync(Expression<Func<Author, bool>> predicate = null)
         {
             throw new NotImplementedException();
         }
@@ -84,7 +84,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             return (from auth in _context.Authors where auth.AuthorId == id select auth).SingleOrDefault();
         }
 
-        public ICollection<Author> GetAll()
+        public IEnumerable<Author> GetAll()
         {
             return _context.Authors.ToList();
         }

@@ -9,7 +9,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Interface
     public interface IAuthorRepository : IRepository<Author>
     {
         void AddAsync(Author entity);
-        Task<ICollection<Author>> FindAllAsync(Expression<Func<Author, bool>> predicate = null);
+        Task<IEnumerable<Author>> FindAllAsync(Expression<Func<Author, bool>> predicate = null);
         Task<Author> FindAsync(Expression<Func<Author, bool>> predicate = null);
         void SaveChanges();
     }

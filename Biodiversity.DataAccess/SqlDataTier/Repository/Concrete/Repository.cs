@@ -38,7 +38,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             return _context.Set<T>().Find(Id);
         }
 
-        public ICollection<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
             return _context.Set<T>().AsEnumerable().ToList();
         }
