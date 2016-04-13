@@ -1,6 +1,7 @@
 using System.Web.Http;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Concrete;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
+using Biodiversity.DataAccess.SqlDataTier.Repository.UnitOfWork;
 using Microsoft.Practices.Unity;
 using Unity.WebApi;
 
@@ -19,6 +20,7 @@ namespace Biodiversity.WebAPI.Service
             container.RegisterType<IAuthorRepository, AuthorRepository>();
             container.RegisterType<ILiteratureRepository, LiteratureRepository>();
             container.RegisterType<ITaxonRepository, TaxonRepository>();
+            container.RegisterType<IUnitOfWork, UnitOfWork>();
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }

@@ -85,6 +85,24 @@ namespace Biodiversity.Web.Controllers
             return View(literature);
         }
 
+
+        public PartialViewResult GetAuthorForGivenLiterature(string searchString)
+        {
+            searchString = "l";
+            var authors = _unitOfWork.AuthorRepository.GetAll(y => y.LastName.StartsWith(searchString)).ToList();
+            var lst = new List<AuthorPartialViewModel>();
+            foreach (var author in authors)
+            {
+                var apm = new AuthorPartialViewModel
+                {
+                    AuthorId = author.AuthorId,
+                    LastName = author.LastName,
+                    FirstName = author.FirstName
+                };
+                lst.Add(apm);
+            }
+            return PartialView(lst);
+        }
         // GET: Literatures/Edit/5
         public ActionResult Edit(int id)
         {

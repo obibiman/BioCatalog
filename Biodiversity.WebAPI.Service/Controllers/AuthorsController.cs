@@ -20,6 +20,10 @@ namespace Biodiversity.WebAPI.Service.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        public AuthorsController()
+        {
+                
+        }
         // GET: api/Authors
         public IEnumerable<AuthorListModel> Get()
         {
