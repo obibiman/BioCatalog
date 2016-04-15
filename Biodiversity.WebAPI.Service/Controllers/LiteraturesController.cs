@@ -24,7 +24,8 @@ namespace Biodiversity.WebAPI.Service.Controllers
         [HttpGet]
         public IHttpActionResult RetrieveAuthors(string searchText = "")
         {
-            var searchString = HttpUtility.HtmlEncode(searchText);
+            //var searchString = HttpUtility.HtmlEncode(searchText);
+            var searchString = searchText.Trim();
             IEnumerable<Author> allAuthors;
             if (!string.IsNullOrWhiteSpace(searchString))
             {
