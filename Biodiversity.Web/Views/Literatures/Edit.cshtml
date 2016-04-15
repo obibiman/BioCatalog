@@ -5,8 +5,65 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
 <h2>Edit</h2>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtName').autocomplete({
+            source: function (request, response) {
+                var autocompleteUrl = '/api/Literatures/RetrieveAuthors' + '?searchText=' + request.term;
+                $.ajax({
+                    url: autocompleteUrl,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    success: function (json) {
+                        response($.map(json, function (data, id) {
+                            return {
+                                label: data.Name,
+                                value: data.Name
+                            };
+                        }));
+                    },
+                    error: function (xmlHttpRequest, textStatus, errorThrown) {
+                        console.log('some error occured', textStatus, errorThrown);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                lblMessage.innerText = "Your Selected Name :";
+                lblSelectedVal.innerText = ui.item.label;
+                $('#txtName').val(ui.item.label);
+                return false;
+            }
+        });
+    });
+</script>
+<div id="body">
+    <table style="background-color: skyblue; border: solid 4px green; width: 80%; text-align: center;">
+        <tr>
+            <td>
+                <label for="autocomplete-textbox">Enter User Name : </label>
+            </td>
+            <td style="text-align: left">
+                <input type="text" id="txtName"/>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <label id="lblMessage" style="color: red;"></label>
+            </td>
+            <td style="text-align: left">
+                <label id="lblSelectedVal" style="color: magenta;"></label>
+            </td>
+        </tr>
+    </table>
+</div>
 
 @using (Html.BeginForm())
 {

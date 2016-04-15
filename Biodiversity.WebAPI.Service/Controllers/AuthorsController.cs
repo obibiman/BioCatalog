@@ -22,8 +22,8 @@ namespace Biodiversity.WebAPI.Service.Controllers
 
         public AuthorsController()
         {
-                
         }
+
         // GET: api/Authors
         public IEnumerable<AuthorListModel> Get()
         {

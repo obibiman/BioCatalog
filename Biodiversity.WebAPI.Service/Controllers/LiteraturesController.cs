@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using AutoMapper;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
@@ -18,6 +19,28 @@ namespace Biodiversity.WebAPI.Service.Controllers
         public LiteraturesController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        [HttpGet]
+        public IHttpActionResult RetrieveAuthors(string searchText = "")
+        {
+            var searchString = HttpUtility.HtmlEncode(searchText);
+            IEnumerable<Author> allAuthors;
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable()
+                    .Where(s => s.LastName.ToUpper()
+                        .StartsWith(searchString.ToUpper()));
+            }
+            else
+            {
+                allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable();
+            }
+            if (allAuthors == null)
+            {
+                return BadRequest("No Authors found");
+            }
+            return Ok(allAuthors);
         }
 
         // GET: api/Literatures
