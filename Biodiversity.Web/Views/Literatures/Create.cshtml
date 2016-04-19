@@ -7,15 +7,16 @@
 
 <link href="~/CSS/jquery-ui-1.9.0.custom.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
-
+<script src="~/Scripts/jQueryUI/UI/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 <h2>Create</h2>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#txtName').autocomplete({
             source: function (request, response) {
-                var autocompleteUrl = '/api/Literatures/RetrieveAuthors' + '?searchText=' + request.term;
+                var searchText= request.term;
+                var autocompleteUrl = 'http://localhost:61330/api/Literatures/RetrieveAuthors/' + searchText;
+                //var autocompleteUrl = 'http://localhost:61330/api/Literatures/RetrieveAuthors' + '?searchText=' + request.term;
                 $.ajax({
                     url: autocompleteUrl,
                     type: 'GET',
@@ -24,8 +25,8 @@
                     success: function (json) {
                         response($.map(json, function (data, id) {
                             return {
-                                label: data.Name,
-                                value: data.Name
+                                label: data.LastName,
+                                value: data.LastName
                             };
                         }));
                     },
@@ -34,7 +35,7 @@
                     }
                 });
             },
-            minLength: 1,
+            //minLength: 1,
             select: function (event, ui) {
                 lblMessage.innerText = "Your Selected Name :";
                 lblSelectedVal.innerText = ui.item.label;

@@ -17,6 +17,9 @@ namespace Biodiversity.WebAPI.Service
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+            // New code
+            config.EnableCors();
+
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new {id = RouteParameter.Optional}
                 );
 

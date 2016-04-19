@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using AutoMapper;
 using Biodiversity.DataAccess.SqlDataTier.Entity;
 using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
@@ -12,6 +13,7 @@ using Biodiversity.WebAPI.Service.Models.Literature;
 
 namespace Biodiversity.WebAPI.Service.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LiteraturesController : ApiController
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -24,10 +26,9 @@ namespace Biodiversity.WebAPI.Service.Controllers
         [HttpGet]
         public IHttpActionResult RetrieveAuthors(string searchText = "")
         {
-            //var searchString = HttpUtility.HtmlEncode(searchText);
-            var searchString = searchText.Trim();
+            var searchString = searchText;
             IEnumerable<Author> allAuthors;
-            if (!string.IsNullOrWhiteSpace(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable()
                     .Where(s => s.LastName.ToUpper()
