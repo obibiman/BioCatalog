@@ -29,10 +29,10 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.UnitOfWork
             return _context.SaveChanges();
         }
 
-        //}
-        //    _context.SaveChanges();
-        //{
-
         //public void SaveChanges()
+        //{
+        //    _context.SaveChanges();
+
+        //}
     }
 }

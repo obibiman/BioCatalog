@@ -18,14 +18,14 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Interface
         //
         void AddRange(IEnumerable<T> entities);
         void RemoveRange(IEnumerable<T> entities);
-        //Task<IEnumerable<T>> GetAllEntitiesFiltered(Expression<Func<T, bool>> predicate = null);
-        //Task<IEnumerable<T>> GetAllEntities();
-        //Task<T> GetEntity(Expression<Func<T, bool>> predicate);
-        //Task<T> GetEntityById(int Id);
-        //Task CountEntity();
-        //Task DeleteEntity(T entity);
-        //Task UpdateEntity(T entity);
-        //Task AddEntity(T entity);
         //asyncs
+        //Task AddEntity(T entity);
+        //Task UpdateEntity(T entity);
+        //Task DeleteEntity(T entity);
+        //Task CountEntity();
+        //Task<T> GetEntityById(int Id);
+        //Task<T> GetEntity(Expression<Func<T, bool>> predicate);
+        //Task<IEnumerable<T>> GetAllEntities();
+        //Task<IEnumerable<T>> GetAllEntitiesFiltered(Expression<Func<T, bool>> predicate = null);
     }
 }

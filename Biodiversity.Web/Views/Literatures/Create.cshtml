@@ -5,24 +5,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/CSS/jquery-ui-1.9.0.custom.css" rel="stylesheet" />
+<link href="~/CSS/jquery-ui-1.9.0.custom.css" rel="stylesheet"/>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jQueryUI/UI/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 <h2>Create</h2>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#txtName').autocomplete({
-            source: function (request, response) {
-                var searchText= request.term;
+            source: function(request, response) {
+                var searchText = request.term;
                 var autocompleteUrl = 'http://localhost:61330/api/Literatures/RetrieveAuthors/' + searchText;
                 $.ajax({
                     url: autocompleteUrl,
                     type: 'GET',
                     cache: false,
                     dataType: 'json',
-                    success: function (json) {
-                        response($.map(json, function (data, id) {
+                    success: function(json) {
+                        response($.map(json, function(data, id) {
                             return {
                                 label: data.AuthorId + ': ' + data.FirstName + ' ' + data.SurName + ' ' + data.LastName,
                                 value: data.AuthorId + ': ' + data.FirstName + ' ' + data.SurName + ' ' + data.LastName
@@ -33,13 +33,13 @@
                             //};
                         }));
                     },
-                    error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    error: function(xmlHttpRequest, textStatus, errorThrown) {
                         console.log('some error occured', textStatus, errorThrown);
                     }
                 });
             },
             //minLength: 1,
-            select: function (event, ui) {
+            select: function(event, ui) {
                 lblMessage.innerText = "Your Selected Author :";
                 lblSelectedVal.innerText = ui.item.label;
                 $('#txtName').val(ui.item.label);
@@ -49,13 +49,13 @@
     });
 </script>
 <div id="body">
-    <table style="background-color: skyblue; border: solid 4px green; width: 80%; text-align: center;">
+    <table style="background-color: skyblue; border: solid 4px green; text-align: center; width: 80%;">
         <tr>
             <td>
                 <label for="autocomplete-textbox">Enter User Name : </label>
             </td>
             <td style="text-align: left">
-                <input type="text" id="txtName" />
+                <input type="text" id="txtName"/>
             </td>
         </tr>
         <tr>

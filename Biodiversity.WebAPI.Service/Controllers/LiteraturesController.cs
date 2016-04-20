@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using AutoMapper;
@@ -13,7 +12,7 @@ using Biodiversity.WebAPI.Service.Models.Literature;
 
 namespace Biodiversity.WebAPI.Service.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [EnableCors("*", "*", "*")]
     public class LiteraturesController : ApiController
     {
         private readonly IUnitOfWork _unitOfWork;

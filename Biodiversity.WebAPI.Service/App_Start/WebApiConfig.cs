@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using System.Net.Http.Headers;
 using System.Web.Http;
+using Newtonsoft.Json;
 
 namespace Biodiversity.WebAPI.Service
 {
@@ -10,9 +10,10 @@ namespace Biodiversity.WebAPI.Service
         {
             // Web API configuration and services
             //config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
-            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            var appXmlType =
+                config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
-            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -23,10 +24,8 @@ namespace Biodiversity.WebAPI.Service
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new {id = RouteParameter.Optional}
                 );
 
-            config.Routes.MapHttpRoute(
-                name: "ActionApi",
-                routeTemplate: "api/{controller}/{action}/{searchText}",
-                defaults: new {searchText = RouteParameter.Optional}
+            config.Routes.MapHttpRoute("ActionApi", "api/{controller}/{action}/{searchText}",
+                new {searchText = RouteParameter.Optional}
                 );
         }
     }

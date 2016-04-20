@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Biodiversity.WebAPI.Service.Console
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             RunAsync().Wait();
         }
-        static async Task RunAsync()
+
+        private static async Task RunAsync()
         {
             using (var client = new HttpClient())
             {
