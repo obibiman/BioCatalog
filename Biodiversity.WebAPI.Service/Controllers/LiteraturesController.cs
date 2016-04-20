@@ -21,9 +21,8 @@ namespace Biodiversity.WebAPI.Service.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-
-        [HttpGet]
-        [Route("Api/Literatures/RetrieveAuthors/{searchText:alpha}")]
+        
+        [HttpGet, Route("Api/Literatures/RetrieveAuthors/{searchText:alpha}")]
         public IHttpActionResult RetrieveAuthors(string searchText = "")
         {
             var searchString = searchText;
