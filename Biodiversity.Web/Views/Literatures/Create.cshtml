@@ -16,7 +16,6 @@
             source: function (request, response) {
                 var searchText= request.term;
                 var autocompleteUrl = 'http://localhost:61330/api/Literatures/RetrieveAuthors/' + searchText;
-                //var autocompleteUrl = 'http://localhost:61330/api/Literatures/RetrieveAuthors' + '?searchText=' + request.term;
                 $.ajax({
                     url: autocompleteUrl,
                     type: 'GET',
@@ -25,9 +24,13 @@
                     success: function (json) {
                         response($.map(json, function (data, id) {
                             return {
-                                label: data.LastName,
-                                value: data.LastName
+                                label: data.AuthorId + ': ' + data.FirstName + ' ' + data.SurName + ' ' + data.LastName,
+                                value: data.AuthorId + ': ' + data.FirstName + ' ' + data.SurName + ' ' + data.LastName
                             };
+                            //return {
+                            //    label: data.LastName,
+                            //    value: data.LastName
+                            //};
                         }));
                     },
                     error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -37,7 +40,7 @@
             },
             //minLength: 1,
             select: function (event, ui) {
-                lblMessage.innerText = "Your Selected Name :";
+                lblMessage.innerText = "Your Selected Author :";
                 lblSelectedVal.innerText = ui.item.label;
                 $('#txtName').val(ui.item.label);
                 return false;

@@ -25,8 +25,8 @@ namespace Biodiversity.WebAPI.Service
 
             config.Routes.MapHttpRoute(
                 name: "ActionApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new {id = RouteParameter.Optional}
+                routeTemplate: "api/{controller}/{action}/{searchText}",
+                defaults: new {searchText = RouteParameter.Optional}
                 );
         }
     }

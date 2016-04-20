@@ -18,12 +18,6 @@ namespace Biodiversity.Web.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        //// GET: Literatures
-        //public ActionResult Index()
-        //{
-        //    return View(_unitOfWork.LiteratureRepository.GetAll().ToList());
-        //}
-
         public ActionResult Index(string searchString)
         {
             IEnumerable<Literature> allLiteratures;
