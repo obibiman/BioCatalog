@@ -21,7 +21,7 @@ namespace Biodiversity.WebAPI.Service.Console
                 client.BaseAddress = new Uri("http://localhost:61330/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.GetAsync("api/Litertures/RetrieveAuthors?searchText=L");
+                var response = await client.GetAsync("api/Litertures/RetrieveAuthors/searchText");
                 if (response.IsSuccessStatusCode)
                 {
                     //Product product = await response.Content.ReadAsAsync > Product > ();
