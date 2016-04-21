@@ -11,7 +11,8 @@
 <h2>Create</h2>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
+        var dataStore;
         $('#txtName').autocomplete({
             source: function(request, response) {
                 var searchText = request.term;
@@ -22,7 +23,9 @@
                     cache: false,
                     dataType: 'json',
                     success: function(json) {
-                        response($.map(json, function(data, id) {
+                        response($.map(json, function (data, id) {
+                            dataStore = data;
+                            var dataItem = new Object();
                             return {
                                 label: data.AuthorId + ': ' + data.FirstName + ' ' + data.SurName + ' ' + data.LastName,
                                 value: data.AuthorId + ': ' + data.FirstName + ' ' + data.SurName + ' ' + data.LastName
@@ -38,17 +41,71 @@
                     }
                 });
             },
+        
             //minLength: 1,
-            select: function (event, ui) {
+            select: function(event, ui) {
                 lblMessage.innerText = "You Selected Author :";
                 lblSelectedVal.innerText = ui.item.label;
                 $('#txtName').val(ui.item.label);
+                //$('#txtAuthorId').val(ui.item.dataItem[0]);
+                //$('#txtAuthorFirstName').val(ui.item.dataItem[1]);
+                //$('#txtAuthorSurName').val(ui.item.dataItem[2]);
+                //$('#txtAuthorLastName').val(ui.item.dataItem[3]);
                 return false;
             }
         });
     });
 </script>
-<div id="body">
+<form id="authorSearch" class="form-horizontal">
+    <div class="form-group">
+        <label for="txtName" class="col-sm-3 control-label">Author Last Name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="txtName"
+                   placeholder="Enter author last name in whole or in part">
+        </div>
+        <div></div>
+    </div>
+    @*<div class="form-group">
+        <label for="txtAuthorId" class="col-sm-3 control-label">Author Id</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="txtAuthorId">
+        </div>
+        <div></div>
+    </div>
+    <div class="form-group">
+        <label for="txtAuthorFirstName" class="col-sm-3 control-label">Author First Name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="txtAuthorFirstName">
+        </div>
+        <div></div>
+    </div>
+    <div class="form-group">
+        <label for="txtAuthorSurName" class="col-sm-3 control-label">Author Surname</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="txtAuthorSurName">
+        </div>
+        <div></div>
+    </div>
+    <div class="form-group">
+        <label for="txtAuthorLastName" class="col-sm-3 control-label">Author Last Name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="txtAuthorLastName">
+        </div>
+        <div></div>
+    </div>*@
+    <div class="form-group">
+        <label id="lblMessage" class="col-sm-3 control-label">
+        </label>
+    </div>
+    <div class="form-group">
+        <label id="lblSelectedVal" class="col-sm-3 control-label"></label>
+    </div>
+    <div class="clearfix">&nbsp;</div>
+    <div class="col-sm-12 text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+@*<div id="body">
     <table style="background-color: skyblue; border: solid 4px green; text-align: center; width: 50%;">
         <tr>
             <td>
@@ -70,7 +127,7 @@
             </td>
         </tr>
     </table>
-</div>
+</div>*@
 
 @*@using (Html.BeginForm())
 {
