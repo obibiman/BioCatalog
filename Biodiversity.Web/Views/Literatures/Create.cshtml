@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/CSS/jquery-ui-1.9.0.custom.css" rel="stylesheet"/>
+<link href="~/CSS/jquery-ui-1.9.0.custom.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jQueryUI/UI/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 <h2>Create</h2>
@@ -25,7 +25,6 @@
                     success: function(json) {
                         response($.map(json, function(data, id) {
                             dataStore = data;
-                            var dataItem = new Object();
                             return {
                                 label: data.AuthorId + ': ' + data.FirstName + ' ' + data.SurName + ' ' + data.LastName,
                                 value: data.AuthorId + ': ' + data.FirstName + ' ' + data.SurName + ' ' + data.LastName,
@@ -34,10 +33,6 @@
                                 surName: data.SurName,
                                 lastName: data.LastName
                             };
-                            //return {
-                            //    label: data.LastName,
-                            //    value: data.LastName
-                            //};
                         }));
                     },
                     error: function(xmlHttpRequest, textStatus, errorThrown) {
@@ -48,6 +43,8 @@
 
             //minLength: 1,
             select: function(event, ui) {
+                var theChosenAuthorText = ui.item.label;
+                var chosenAuthorId = ui.item.authorId;
                 lblMessage.innerText = "You Selected Author :";
                 lblSelectedVal.innerText = ui.item.label;
                 $('#txtName').val(ui.item.label);
@@ -55,93 +52,74 @@
                 $('#txtAuthorFirstName').val(ui.item.firstName);
                 $('#txtAuthorSurName').val(ui.item.surName);
                 $('#txtAuthorLastName').val(ui.item.lastName);
+                $('#authorList').append("<option value='" + chosenAuthorId + "'>" + theChosenAuthorText + "</option>");
                 return false;
             }
         });
     });
 </script>
-<table class="table-bordered">
-    <form id="authorSearch" class="form-horizontal">
-        <div class="form-group">
-            <label for="txtName" class="col-sm-3 control-label">Author Details</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="txtName"
-                       placeholder="Enter author last name in whole or in part">
-            </div>
-            <div></div>
-        </div>
-        <div class="form-group">
-            <label for="txtAuthorId" class="col-sm-3 control-label">Author Id</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="txtAuthorId">
-            </div>
-            <div></div>
-        </div>
-        <div class="form-group">
-            <label for="txtAuthorFirstName" class="col-sm-3 control-label">Author First Name</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="txtAuthorFirstName">
-            </div>
-            <div></div>
-        </div>
-        <div class="form-group">
-            <label for="txtAuthorSurName" class="col-sm-3 control-label">Author Surname</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="txtAuthorSurName">
-            </div>
-            <div></div>
-        </div>
-        <div class="form-group">
-            <label for="txtAuthorLastName" class="col-sm-3 control-label">Author Last Name</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="txtAuthorLastName">
-            </div>
-            <div></div>
-        </div>
-        <div class="form-group">
-            <label id="lblMessage" class="col-sm-3 control-label">
-            </label>
-        </div>
-        <div class="form-group">
-            <label id="lblSelectedVal" class="col-sm-3 control-label"></label>
-        </div>
-        <div class="clearfix">&nbsp;</div>
-        <div class="col-sm-12 text-center">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-</table>
-@*<div id="body">
-    <table style="background-color: skyblue; border: solid 4px green; text-align: center; width: 50%;">
-        <tr>
-            <td>
-                <label for="autocomplete-textbox">Enter User Name : </label>
-            </td>
-            <td style="text-align: left">
-                <input type="text" id="txtName" size="50"/>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <label id="lblMessage" style="color: red;" ></label>
-            </td>
-            <td style="text-align: left">
-                <label id="lblSelectedVal" style="color: magenta;" ></label>
-            </td>
-        </tr>
-    </table>
-</div>*@
 
-@*@using (Html.BeginForm())
+@using (Html.BeginForm())
 {
-    <p>
-        Find Author by Last Name: @Html.TextBox("SearchString") <input type="submit" value="Search"/>
-    </p>
-}*@
+    @Html.AntiForgeryToken()
+    <table class="table-striped" id="authorFilter">
+        <form id="authorSearch" class="form-horizontal">
+            <div class="form-group">
+                <label for="txtName" class="col-sm-3 control-label">Author Details</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="txtName"
+                           placeholder="Enter author last name in whole or in part">
+                </div>
+                <div></div>
+            </div>
+            <div class="form-group">
+                <label for="txtAuthorId" class="col-sm-3 control-label">Author Id</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="txtAuthorId" disabled>
+                </div>
+                <div></div>
+            </div>
+            <div class="form-group">
+                <label for="txtAuthorFirstName" class="col-sm-3 control-label">Author First Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="txtAuthorFirstName" disabled>
+                </div>
+                <div></div>
+            </div>
+            <div class="form-group">
+                <label for="txtAuthorSurName" class="col-sm-3 control-label">Author Surname</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="txtAuthorSurName" disabled>
+                </div>
+                <div></div>
+            </div>
+            <div class="form-group">
+                <label for="txtAuthorLastName" class="col-sm-3 control-label">Author Last Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="txtAuthorLastName" disabled>
+                </div>
+                <div></div>
+            </div>
+            <div class="form-group" id="lstAuthors">
+                <select id="authorList" name="selecteAuthors" multiple="multiple">
+                </select>
+                <div></div>
+            </div>
+            <div class="form-group">
+                <label id="lblMessage" class="col-sm-3 control-label">
+                </label>
+            </div>
+            <div class="form-group">
+                <label id="lblSelectedVal" class="col-sm-3 control-label"></label>
+            </div>
 
+            <div class="clearfix">&nbsp;</div>
+            <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </table>
+}
 
 @using (Html.BeginForm())
 {
@@ -149,155 +127,155 @@
 
     <div class="form-vertical">
         <h4>Literature</h4>
-        <hr/>
-        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @*<div class="form-group">
-            @Html.LabelFor(model => model.LiteratureId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LiteratureId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LiteratureId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.LiteratureId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LiteratureId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LiteratureId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ReferenceYear, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.ReferenceYear, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ReferenceYear, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.ReferenceYear, "", new {@class = "text-danger"})
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReferenceYearSub, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReferenceYearSub, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.ReferenceYearSub, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.ReferenceYear, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReferenceYear, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ReferenceDate, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.ReferenceYearSub, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ReferenceDate, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.ReferenceDate, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.ReferenceYearSub, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReferenceYearSub, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TitleofArticleBooktitle, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.ReferenceDate, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TitleofArticleBooktitle, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.TitleofArticleBooktitle, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.ReferenceDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReferenceDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.InReferenceNumber, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.TitleofArticleBooktitle, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.InReferenceNumber, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.InReferenceNumber, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.TitleofArticleBooktitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TitleofArticleBooktitle, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Journal, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.InReferenceNumber, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Journal, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Journal, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.InReferenceNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.InReferenceNumber, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Volume, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.Journal, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Volume, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Volume, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.Journal, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Journal, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Page, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.Volume, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Page, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Page, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.Volume, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Volume, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Plate, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.Page, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Plate, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Plate, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.Page, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Page, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Publisher, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.Plate, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Publisher, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Publisher, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.Plate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Plate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.City, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.Publisher, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.City, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.City, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.Publisher, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Publisher, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Comment, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.City, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Comment, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Comment, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PdfId, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.Comment, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PdfId, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.PdfId, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ModifiedBy, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.PdfId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ModifiedBy, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.ModifiedBy, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.PdfId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PdfId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ModifiedDate, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.ModifiedBy, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ModifiedDate, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.ModifiedDate, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.ModifiedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ModifiedBy, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.ModifiedDate, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.CreatedBy, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.ModifiedDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ModifiedDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CreatedDate, new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.CreatedBy, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedDate, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.CreatedDate, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreatedDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </div>
     </div>
