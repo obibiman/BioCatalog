@@ -86,7 +86,7 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 
         public IEnumerable<Author> GetAll()
         {
-            return _context.Authors.ToList();
+            return _context.Authors.ToList().OrderBy(y=>y.LastName);
         }
 
         public Author Get(Expression<Func<Author, bool>> predicate)

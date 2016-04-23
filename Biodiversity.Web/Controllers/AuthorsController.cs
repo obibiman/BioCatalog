@@ -30,12 +30,13 @@ namespace Biodiversity.Web.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable()
+                    .OrderBy(s=>s.LastName)
                     .Where(s => s.LastName.ToUpper()
                         .StartsWith(searchString.ToUpper()));
             }
             else
             {
-                allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable();
+                allAuthors = _unitOfWork.AuthorRepository.GetAll().AsEnumerable().OrderBy(y=>y.LastName);
             }
             return View(allAuthors.ToPagedList(pageNumber, pageSize));
         }
