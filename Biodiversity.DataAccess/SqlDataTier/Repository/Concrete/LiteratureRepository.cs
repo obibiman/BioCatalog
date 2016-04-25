@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.SqlClient;
 using System.Linq;
@@ -31,12 +32,17 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 
         public Literature GetById(int id)
         {
-            return (from auth in _context.Literatures where auth.LiteratureId == id select auth).SingleOrDefault();
+            return 
+                _context.Literatures.Where(y => y.LiteratureId == id)
+                    .Include(j => j.LiteratureAuthors)
+                    .SingleOrDefault();
+            //return (from auth in _context.Literatures where auth.LiteratureId == id select auth).SingleOrDefault();
         }
 
         public IEnumerable<Literature> GetAll()
         {
-            return _context.Literatures.ToList();
+          return  _context.Literatures.Include(y => y.LiteratureAuthors).ToList();
+            //return _context.Literatures.ToList();
         }
 
         public Literature Get(Expression<Func<Literature, bool>> predicate)

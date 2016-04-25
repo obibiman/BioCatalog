@@ -225,6 +225,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\LiteratureAuthorsController.cs" />
+    <Compile Include="Controllers\TaxonAuthorsController.cs" />
+    <Compile Include="Controllers\TaxonLiteraturesController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Models\Literature\AuthorPartialViewModel.cs" />
     <Compile Include="Models\Literature\LiteratureCreateViewModel.cs" />

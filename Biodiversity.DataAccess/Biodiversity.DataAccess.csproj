@@ -62,9 +62,15 @@
     <Compile Include="SqlDataTier\Entity\TaxonAuthor.cs" />
     <Compile Include="SqlDataTier\Entity\TaxonLiterature.cs" />
     <Compile Include="SqlDataTier\Repository\Concrete\AuthorRepository.cs" />
+    <Compile Include="SqlDataTier\Repository\Concrete\LiteratureAuthorRepository.cs" />
     <Compile Include="SqlDataTier\Repository\Concrete\SequenceIdentifier.cs" />
+    <Compile Include="SqlDataTier\Repository\Concrete\TaxonAuthorRepository.cs" />
+    <Compile Include="SqlDataTier\Repository\Concrete\TaxonLiteratureRepository.cs" />
     <Compile Include="SqlDataTier\Repository\Interface\IAuthorRepository.cs" />
+    <Compile Include="SqlDataTier\Repository\Interface\ILiteratureAuthorRepository.cs" />
     <Compile Include="SqlDataTier\Repository\Interface\ILiteratureRepository.cs" />
+    <Compile Include="SqlDataTier\Repository\Interface\ITaxonAuthorRepository.cs" />
+    <Compile Include="SqlDataTier\Repository\Interface\ITaxonLiteratureRepository.cs" />
     <Compile Include="SqlDataTier\Repository\Interface\ITaxonRepository.cs" />
     <Compile Include="SqlDataTier\Repository\Concrete\LiteratureRepository.cs" />
     <Compile Include="SqlDataTier\Repository\Concrete\Repository.cs" />

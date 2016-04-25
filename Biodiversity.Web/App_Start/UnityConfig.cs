@@ -33,6 +33,9 @@ namespace Biodiversity.Web
             container.RegisterType<IAuthorRepository, AuthorRepository>();
             container.RegisterType<ILiteratureRepository, LiteratureRepository>();
             container.RegisterType<ITaxonRepository, TaxonRepository>();
+            container.RegisterType<ITaxonAuthorRepository, TaxonAuthorRepository>();
+            container.RegisterType<ILiteratureAuthorRepository, LiteratureAuthorRepository>();
+            container.RegisterType<ITaxonLiteratureRepository, TaxonLiteratureRepository>();
         }
     }
 }

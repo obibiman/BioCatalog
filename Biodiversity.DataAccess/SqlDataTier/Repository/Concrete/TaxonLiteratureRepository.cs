@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,33 +11,33 @@ using Biodiversity.DataAccess.SqlDataTier.Repository.Interface;
 
 namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
 {
-    public class AuthorRepository : Repository<Author>, IAuthorRepository
+    public class TaxonLiteratureRepository : Repository<TaxonLiterature>, ITaxonLiteratureRepository
     {
         protected Biocontext _context;
 
-        public AuthorRepository(Biocontext context) : base(context)
+        public TaxonLiteratureRepository(Biocontext context) : base(context)
         {
             _context = context;
         }
 
-        public Task<IEnumerable<Author>> FindAllAsync(Expression<Func<Author, bool>> predicate = null)
+        public Task<IEnumerable<TaxonLiterature>> FindAllAsync(Expression<Func<TaxonLiterature, bool>> predicate = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Author> FindAsync(Expression<Func<Author, bool>> predicate = null)
+        public Task<TaxonLiterature> FindAsync(Expression<Func<TaxonLiterature, bool>> predicate = null)
         {
             throw new NotImplementedException();
         }
 
-        public void AddAsync(Author entity)
+        public void AddAsync(TaxonLiterature entity)
         {
             var inputValue = new SqlParameter
             {
                 ParameterName = "@SequenceName",
                 SqlDbType = SqlDbType.NVarChar,
                 Size = 50,
-                Value = SequenceIdentifier.AuthorSequence,
+                Value = SequenceIdentifier.TaxonLiteratureSequence,
                 Direction = ParameterDirection.Input
             };
             var outParam = new SqlParameter
@@ -59,15 +58,8 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
                     returnCode, inputValue, outParam)
                 .FirstOrDefaultAsync();
 
-            entity.AuthorId = data.Result;
-
-            entity.ModifiedDate = null;
-            entity.ModifiedBy = string.Empty;
-            entity.CreatedDate = DateTime.Now;
-            entity.CreatedBy = "Admin";
-
-            _context.Authors.Add(entity);
-            //SaveChanges();
+            entity.TaxonLiteratureId = data.Result;
+            _context.TaxonLiteratures.Add(entity);
         }
 
         public void SaveChanges()
@@ -75,41 +67,37 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
             _context.SaveChanges();
         }
 
-        public IEnumerable<Author> GetAll(Expression<Func<Author, bool>> predicate = null)
+        public IEnumerable<TaxonLiterature> GetAll(Expression<Func<TaxonLiterature, bool>> predicate = null)
         {
-            return _context.Authors.Where(predicate);
+            return _context.TaxonLiteratures.Where(predicate);
         }
 
-        public Author GetById(int id)
+        public TaxonLiterature GetById(int id)
         {
-           return _context.Authors.Where(y => y.AuthorId == id)
-                 .Include(j => j.LiteratureAuthors)
-                 .SingleOrDefault();
-            //return (from auth in _context.Authors where auth.AuthorId == id select auth).SingleOrDefault();
+            return Queryable.SingleOrDefault<TaxonLiterature>(_context.TaxonLiteratures.Where(y => y.TaxonLiteratureId == id));
+            //return (from auth in _context.TaxonLiteratures where auth.TaxonLiteratureId == id select auth).SingleOrDefault();
         }
 
-        public IEnumerable<Author> GetAll()
+        public IEnumerable<TaxonLiterature> GetAll()
         {
-            return _context.Authors
-                .Include(j => j.LiteratureAuthors)
-                .ToList();
-            //return _context.Authors.ToList().OrderBy(y=>y.LastName);
+            return _context.TaxonLiteratures.ToList();
+            //return _context.TaxonLiteratures.ToList().OrderBy(y=>y.LastName);
         }
 
-        public Author Get(Expression<Func<Author, bool>> predicate)
+        public TaxonLiterature Get(Expression<Func<TaxonLiterature, bool>> predicate)
         {
-            return _context.Authors.Include(j => j.LiteratureAuthors).SingleOrDefault(predicate);
-            //return _context.Authors.SingleOrDefault(predicate);
+            return _context.TaxonLiteratures.SingleOrDefault(predicate);
+            //return _context.TaxonLiteratures.SingleOrDefault(predicate);
         }
 
-        public new void Add(Author entity)
+        public new void Add(TaxonLiterature entity)
         {
             var inputValue = new SqlParameter
             {
                 ParameterName = "@SequenceName",
                 SqlDbType = SqlDbType.NVarChar,
                 Size = 50,
-                Value = SequenceIdentifier.AuthorSequence,
+                Value = SequenceIdentifier.TaxonLiteratureSequence,
                 Direction = ParameterDirection.Input
             };
             var outParam = new SqlParameter
@@ -130,46 +118,39 @@ namespace Biodiversity.DataAccess.SqlDataTier.Repository.Concrete
                     returnCode, inputValue, outParam)
                 .FirstOrDefaultAsync();
 
-            entity.AuthorId = data.Result;
-
-            entity.ModifiedDate = null;
-            entity.ModifiedBy = string.Empty;
-            entity.CreatedDate = DateTime.Now;
-            entity.CreatedBy = "Admin";
-            _context.Authors.Add(entity);
+            entity.TaxonLiteratureId = data.Result;
+            _context.TaxonLiteratures.Add(entity);
             //SaveChanges();
         }
 
-        public void Update(Author entity)
+        public void Update(TaxonLiterature entity)
         {
-            var existingEntity = GetById(entity.AuthorId);
+            var existingEntity = GetById(entity.TaxonLiteratureId);
             if (existingEntity == null)
             {
                 return;
             }
-            entity.ModifiedDate = DateTime.Now;
-            _context.Authors.AddOrUpdate(entity);
+            _context.TaxonLiteratures.AddOrUpdate(entity);
             //SaveChanges();
         }
 
-        public void Delete(Author entity)
+        public void Delete(TaxonLiterature entity)
         {
-            _context.Authors.Remove(entity);
+            _context.TaxonLiteratures.Remove(entity);
             //SaveChanges();
         }
 
         public long Count()
         {
-            return _context.Authors.Count();
+            return _context.TaxonLiteratures.Count();
         }
 
         [Obsolete]
-        public void Add_Old(Author entity)
+        public void Add_Old(TaxonLiterature entity)
         {
-            entity.AuthorId =
-                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.AuthorSequence;").FirstOrDefault();
-            entity.CreatedDate = DateTime.Now;
-            _context.Authors.Add(entity);
+            entity.TaxonLiteratureId =
+                _context.Database.SqlQuery<int>("SELECT NEXT VALUE FOR dbo.TaxonLiteratureSequence;").FirstOrDefault();
+            _context.TaxonLiteratures.Add(entity);
             //SaveChanges();
         }
     }
