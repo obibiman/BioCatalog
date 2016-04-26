@@ -8,7 +8,7 @@ namespace Biodiversity.BusinessServices.Interfaces
 {
     public interface IAuthorService
     {
-        void AddAsync(Author entity);
+        Task AddAsync(Author entity);
         Task<IEnumerable<Author>> FindAllAsync(Expression<Func<Author, bool>> predicate = null);
         Task<Author> FindAsync(Expression<Func<Author, bool>> predicate = null);
         void Add(Author entity);

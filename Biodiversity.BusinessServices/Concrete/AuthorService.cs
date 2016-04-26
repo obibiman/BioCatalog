@@ -22,7 +22,7 @@ namespace Biodiversity.BusinessServices.Concrete
             _unitOfWork = unitOfWork;
         }
 
-        public void AddAsync(Author entity)
+        public Task AddAsync(Author entity)
         {
             throw new NotImplementedException();
         }
@@ -39,9 +39,6 @@ namespace Biodiversity.BusinessServices.Concrete
 
         public void Add(Author entity)
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Biodiversity.DataAccess.SqlDataTier.Entity.Author, Author>());
-            var mapper = config.CreateMapper();
-            //Author dto = mapper.Map<OrderDto>(order);
             throw new NotImplementedException();
         }
 
