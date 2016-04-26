@@ -1,4 +1,4 @@
-namespace Biodiversity.Domain
+namespace Biodiversity.Domain.Core
 {
     public class TaxonAuthor
     {

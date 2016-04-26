@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Biodiversity.Domain
+namespace Biodiversity.Domain.Core
 {
     public class Literature
     {
